@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snippet Library</title>
+<style>
+:root{
+  --bg:#f5f5f3; --panel:#ffffff; --panel-2:#efefec; --hover:#f2f2ef; --border:#e1e1dc;
+  --text:#1c1c1b; --muted:#6c6c67; --accent:#2f6fec; --accent-soft:rgba(47,111,236,.12);
+  --danger:#c8372d; --ok:#1f9d55; --warn:#c77700; --focus:rgba(47,111,236,.35);
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(0,0,0,.06);
+  --t-shortcut:#7a5af8; --t-text:#2f6fec; --t-script:#0e9f6e; --t-color:#e8590c; --t-image:#d6336c; --t-link:#0891b2;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#131313; --panel:#1c1c1b; --panel-2:#252524; --hover:#222221; --border:#32322f;
+    --text:#ececea; --muted:#9b9b95; --accent:#5b8ef5; --accent-soft:rgba(91,142,245,.16);
+    --danger:#f0675c; --ok:#4cc38a; --warn:#f0a43c; --focus:rgba(91,142,245,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+kbd{font-family:var(--mono);font-size:12px;background:var(--panel-2);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:1px 6px;white-space:nowrap}
+mark{background:rgba(255,200,0,.4);color:inherit;border-radius:2px}
+
+/* layout */
+.app{display:grid;grid-template-columns:230px 1fr;grid-template-rows:auto 1fr;height:100vh}
+header{grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--panel)}
+.brand{font-weight:650;font-size:15px;white-space:nowrap;width:198px}
+.search{flex:1;position:relative;max-width:640px}
+.search input{width:100%;padding:8px 12px 8px 34px;border:1px solid var(--border);border-radius:8px;background:var(--bg);outline:none}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--focus)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.5}
+.search .hint{position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none}
+.spacer{flex:1}
+.btn{border:1px solid var(--border);background:var(--panel);padding:7px 12px;border-radius:8px;white-space:nowrap}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:3px 8px;font-size:12px;border-radius:6px}
+.btn:focus-visible,.icon-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus)}
+.icon-btn{border:0;background:transparent;width:28px;height:28px;border-radius:6px;display:inline-grid;place-items:center;color:var(--muted)}
+.icon-btn:hover{background:var(--panel-2);color:var(--text)}
+.icon-btn.on{color:#e0a800}
+.status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:4px 10px;background:var(--bg);white-space:nowrap}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.status.connected .dot{background:var(--ok)}
+.status.reconnect,.status.error{color:var(--warn);border-color:var(--warn)}
+.status.reconnect .dot,.status.error .dot{background:var(--warn)}
+button.status:hover{background:var(--hover)}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 6px);background:var(--panel);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:6px;min-width:220px;z-index:20}
+.menu button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:6px}
+.menu button:hover{background:var(--panel-2)}
+.menu hr{border:0;border-top:1px solid var(--border);margin:5px 0}
+.menu .note{font-size:12px;color:var(--muted);padding:6px 10px}
+
+aside{border-right:1px solid var(--border);background:var(--panel);overflow:auto;padding:12px 10px}
+.nav-group{margin-bottom:16px}
+.nav-title{display:flex;align-items:center;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:0 8px 4px}
+.nav-title button{border:0;background:transparent;color:var(--muted);font-size:16px;line-height:1;padding:0 4px;border-radius:4px}
+.nav-title button:hover{color:var(--text);background:var(--panel-2)}
+.nav-item{display:flex;align-items:center;gap:8px;width:100%;border:0;background:transparent;padding:6px 8px;border-radius:7px;text-align:left}
+.nav-item:hover{background:var(--hover)}
+.nav-item.active{background:var(--accent-soft);color:var(--accent);font-weight:550}
+.nav-item .count{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nav-item .more{display:none;margin-left:2px;border:0;background:transparent;color:var(--muted);padding:0 4px;border-radius:4px}
+.nav-item:hover .more{display:inline-block}
+.nav-item:hover .count{margin-left:auto}
+.tdot{width:9px;height:9px;border-radius:3px;flex:none}
+
+main{overflow:auto;padding:18px 22px 60px}
+.section-head{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+.section-head h2{font-size:13px;font-weight:600;margin:0;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.section-head .spacer{flex:1}
+.section-head select{border:1px solid var(--border);background:var(--panel);border-radius:6px;padding:3px 6px;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 6px 3px 10px;border:0}
+.chip span{opacity:.7}
+
+/* favorites grid */
+.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:26px}
+.tile{position:relative;text-align:left;border:1px solid var(--border);background:var(--panel);border-radius:12px;padding:12px;min-height:92px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow);transition:transform .08s ease,border-color .1s}
+.tile:hover{border-color:var(--accent)}
+.tile:active{transform:scale(.98)}
+.tile.sel,.row.sel{outline:2px solid var(--accent);outline-offset:1px}
+.tile .t-title{font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word;line-height:1.3}
+.tile .t-type{padding-right:52px}
+.tile .t-actions{background:var(--panel);border-radius:8px}
+.tile .t-sub{font-size:12px;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.tile .t-sub.mono{font-family:var(--mono);font-size:11.5px}
+.tile .t-type{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.tile .t-actions{position:absolute;top:6px;right:6px;display:flex;opacity:0;transition:opacity .1s}
+.tile:hover .t-actions,.tile:focus-within .t-actions{opacity:1}
+.tile .thumb{height:54px;border-radius:7px;background:var(--panel-2) center/cover no-repeat;border:1px solid var(--border)}
+.tile .swatch{height:38px;border-radius:7px;border:1px solid var(--border)}
+
+/* list */
+.list{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:12px;background:var(--panel);overflow:hidden}
+.row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;background:var(--panel)}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--hover)}
+.row .ico{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background-size:cover;background-position:center;border:1px solid transparent}
+.row .main{min-width:0}
+.row .r-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .r-prev{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.row .r-prev.mono{font-family:var(--mono);font-size:12px}
+.row .r-meta{font-size:11.5px;color:var(--muted);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:var(--panel-2);border-radius:5px;padding:0 6px}
+.row .r-actions{display:flex;align-items:center;gap:2px}
+.row .r-actions .btn.small{margin-right:4px}
+.row .r-actions .hov{opacity:0}
+.row:hover .r-actions .hov,.row.sel .r-actions .hov,.row:focus-within .r-actions .hov{opacity:1}
+.empty{text-align:center;color:var(--muted);padding:50px 20px;border:1px dashed var(--border);border-radius:12px}
+.empty h3{color:var(--text);margin:0 0 8px;font-size:16px}
+.empty ul{display:inline-block;text-align:left;margin:12px 0 16px;padding-left:18px}
+.empty li{margin:4px 0}
+.banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--warn);color:var(--text);border-radius:10px;margin-bottom:16px;background:var(--panel)}
+.banner .spacer{flex:1}
+
+/* dialogs */
+dialog{border:1px solid var(--border);border-radius:14px;background:var(--panel);color:var(--text);padding:0;box-shadow:0 20px 60px rgba(0,0,0,.3);width:min(620px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+.dlg-head{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border)}
+.dlg-head h2{margin:0;font-size:16px}
+.dlg-body{padding:16px 18px;max-height:calc(100vh - 200px);overflow:auto}
+.dlg-foot{display:flex;align-items:center;gap:8px;padding:12px 18px;border-top:1px solid var(--border)}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--panel-2);padding:4px;border-radius:9px;margin-bottom:14px}
+.seg label{flex:1;min-width:80px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 8px;border-radius:6px;font-size:13px;cursor:pointer}
+.seg input:checked+span{background:var(--panel);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.seg input:focus-visible+span{box-shadow:0 0 0 3px var(--focus)}
+.field{margin-bottom:12px}
+.field>label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.field input[type=text],.field input[type=url],.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--focus)}
+.field textarea{min-height:120px;resize:vertical}
+.field textarea.mono{font-family:var(--mono);font-size:12.5px;tab-size:2}
+.field .help{font-size:11.5px;color:var(--muted);margin-top:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inline{display:flex;gap:8px;align-items:center}
+.inline input[type=text]{flex:1}
+.recording{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(200,55,45,.25)!important}
+input[type=color]{width:40px;height:36px;padding:2px;border:1px solid var(--border);border-radius:8px;background:var(--bg)}
+.drop{border:1.5px dashed var(--border);border-radius:10px;padding:18px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop img{max-width:100%;max-height:220px;border-radius:6px;display:block;margin:0 auto 8px}
+.err{color:var(--danger);font-size:13px;flex:1}
+.check{display:flex;align-items:center;gap:8px;font-size:13px}
+.choice p{margin:0;color:var(--muted);white-space:pre-line}
+
+/* packs */
+.pack-intro{margin:0 0 12px;color:var(--muted);font-size:13px}
+.pack{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer}
+.pack:hover{background:var(--hover)}
+.pack input{margin-top:3px}
+.pack-main{flex:1;min-width:0}
+.pack-src{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.muted{color:var(--muted);font-size:12.5px}
+.tag-toggle{border:0;background:transparent;color:var(--accent);font-size:12px;padding:4px 8px;cursor:pointer}
+.banner .btn{flex:none}
+.banner.info{border-color:var(--border)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:.18s ease;z-index:50;max-width:calc(100vw - 32px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.keys-help{font-size:12px;color:var(--muted);margin-top:22px;display:flex;flex-wrap:wrap;gap:6px 16px}
+
+@media (max-width:780px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
+  .brand{width:auto}
+  aside{border-right:0;border-bottom:1px solid var(--border);display:flex;gap:6px;overflow-x:auto;padding:8px}
+  .nav-group{margin:0;display:flex;gap:4px;flex:none}
+  .nav-title{display:none}
+  .nav-item{white-space:nowrap;width:auto}
+  .search .hint{display:none}
+  main{padding:14px 16px 60px}
+  .row2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">Snippet Library</div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="text" placeholder="Search everything" autocomplete="off" spellcheck="false" aria-label="Search">
+      <span class="hint"><kbd>⌘F</kbd></span>
+    </div>
+    <div class="spacer"></div>
+    <div id="status"></div>
+    <button class="btn primary" id="newBtn" title="New item (N)">+ New</button>
+    <div class="menu-wrap">
+      <button class="icon-btn" id="menuBtn" aria-label="More" title="More">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="menu" id="menu" hidden></div>
+    </div>
+  </header>
+  <aside id="side"></aside>
+  <main id="main"></main>
+</div>
+
+<dialog id="editor">
+  <form id="editForm" method="dialog" autocomplete="off">
+    <div class="dlg-head"><h2 id="editHeading">New item</h2></div>
+    <div class="dlg-body">
+      <div class="seg" id="typeSeg"></div>
+
+      <div class="field">
+        <label for="f_title">Title</label>
+        <input type="text" id="f_title" placeholder="Optional. Leave blank to auto-name">
+      </div>
+
+      <div class="field" data-types="shortcut">
+        <label for="f_keys">Keys</label>
+        <div class="inline">
+          <input type="text" id="f_keys" placeholder="Type it, or click Record and press the combo">
+          <button type="button" class="btn" id="recBtn">Record</button>
+        </div>
+        <div class="help">Some combos (like ⌘W, ⌘Q, ⌘T) are taken by the browser and can't be recorded. Type those by hand.</div>
+      </div>
+      <div class="field" data-types="shortcut">
+        <label for="f_app">App</label>
+        <input type="text" id="f_app" list="appList" placeholder="Illustrator, Photoshop, Lightroom, Figma...">
+        <datalist id="appList"></datalist>
+      </div>
+
+      <div class="field" data-types="script">
+        <label for="f_lang">Language</label>
+        <input type="text" id="f_lang" list="langList" placeholder="ExtendScript, AppleScript, GREP, CSS...">
+        <datalist id="langList"></datalist>
+      </div>
+      <div class="field" data-types="text script">
+        <label for="f_content" id="contentLabel">Text</label>
+        <textarea id="f_content" spellcheck="false"></textarea>
+      </div>
+
+      <div data-types="color">
+        <div class="row2">
+          <div class="field">
+            <label for="f_hex">HEX</label>
+            <div class="inline">
+              <input type="text" id="f_hex" placeholder="#1C1C1B">
+              <input type="color" id="f_hexpick" aria-label="Pick color">
+            </div>
+            <div class="help" id="rgbOut">RGB is calculated from HEX.</div>
+          </div>
+          <div class="field">
+            <label for="f_cmyk">CMYK</label>
+            <input type="text" id="f_cmyk" placeholder="0 0 0 100">
+            <div class="help">Enter from your swatch. Not auto-converted, since accurate CMYK depends on your color profile.</div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f_spot">Pantone / spot name</label>
+          <input type="text" id="f_spot" placeholder="Optional">
+        </div>
+      </div>
+
+      <div class="field" data-types="image">
+        <label>Image</label>
+        <div class="drop" id="drop" tabindex="0">
+          <div id="dropInner">Drop an image, paste with ⌘V, or click to choose</div>
+        </div>
+        <input type="file" id="imgFile" accept="image/*" hidden>
+        <div class="help">Images over 1600px are scaled down to keep the library file small. Copying puts a PNG on the clipboard.</div>
+      </div>
+
+      <div class="field" data-types="link">
+        <label for="f_url">URL</label>
+        <input type="url" id="f_url" placeholder="https://">
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f_category">Category</label>
+          <select id="f_category"></select>
+        </div>
+        <div class="field">
+          <label for="f_tags">Tags</label>
+          <input type="text" id="f_tags" placeholder="Comma separated">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f_notes">Notes</label>
+        <input type="text" id="f_notes" placeholder="Optional. Searchable, never copied">
+      </div>
+      <label class="check"><input type="checkbox" id="f_fav"> Favorite (shows in the quick-copy grid)</label>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn danger" id="delBtn">Delete</button>
+      <span class="err" id="formErr"></span>
+      <button type="button" class="btn" id="cancelBtn">Cancel</button>
+      <button type="submit" class="btn primary" id="saveBtn">Save <span style="opacity:.7;font-size:12px;margin-left:4px">⌘↩</span></button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="choice" class="choice" style="width:min(440px,calc(100vw - 32px))">
+  <div class="dlg-head"><h2></h2></div>
+  <div class="dlg-body"><p></p><input type="text" class="choice-input" hidden style="width:100%;margin-top:12px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg)"></div>
+  <div class="dlg-foot"><span class="spacer" style="flex:1"></span><span class="btns" style="display:flex;gap:8px"></span></div>
+</dialog>
+
+<dialog id="packsDlg" style="width:min(560px,calc(100vw - 32px))">
+  <div class="dlg-head"><h2>Shortcut packs</h2></div>
+  <div class="dlg-body">
+    <p class="pack-intro">Mac default shortcuts, filed under a category per app and tagged by section. Customized shortcuts in your own apps won't match these. You can edit or delete any item afterwards.</p>
+    <div class="pack-list"></div>
+  </div>
+  <div class="dlg-foot"><span class="spacer" style="flex:1"></span><button type="button" class="btn" id="packsCancel">Cancel</button><button type="button" class="btn primary" id="packsAdd">Add selected</button></div>
+</dialog>
+
+<script type="application/json" id="packData">[{"app":"Illustrator","source":"Adobe Help: Default keyboard shortcuts in Illustrator","items":[{"id":"pk-ec149c07dc","section":"Popular","title":"Undo","keys":"⌘Z"},{"id":"pk-bed82ce9f5","section":"Popular","title":"Redo","keys":"⇧⌘Z"},{"id":"pk-b033b5c6fb","section":"Popular","title":"Cut","keys":"⌘X"},{"id":"pk-34d452bcee","section":"Popular","title":"Copy","keys":"⌘C"},{"id":"pk-267ee4bb08","section":"Popular","title":"Paste","keys":"⌘V"},{"id":"pk-4b697a1b67","section":"Popular","title":"Paste in front","keys":"⌘F"},{"id":"pk-cbe9b5ec53","section":"Popular","title":"Paste at back","keys":"⌘B"},{"id":"pk-18812477a7","section":"Popular","title":"Paste in place","keys":"⇧⌘V"},{"id":"pk-0bd49e9d1c","section":"Popular","title":"Paste on all artboards","keys":"⌥⇧⌘V"},{"id":"pk-87c6756bd9","section":"Popular","title":"Check spelling","keys":"⌘I"},{"id":"pk-dae9b355db","section":"Popular","title":"Open Color Settings","keys":"⇧⌘K"},{"id":"pk-dfe47aee59","section":"Popular","title":"Open Keyboard Shortcuts dialog","keys":"⌥⇧⌘K"},{"id":"pk-38d67c672c","section":"Popular","title":"Open Preferences","keys":"⌘K"},{"id":"pk-0823fc6779","section":"Documents","title":"Create a document","keys":"⌘N"},{"id":"pk-897b84b96e","section":"Documents","title":"Open a document","keys":"⌘O"},{"id":"pk-4375dca5c4","section":"Documents","title":"Place a file","keys":"⇧⌘P"},{"id":"pk-479c5541ad","section":"Documents","title":"Close the document window","keys":"⌘W"},{"id":"pk-c5fa35b1e4","section":"Documents","title":"Save","keys":"⌘S"},{"id":"pk-2aed589fcd","section":"Documents","title":"Save As","keys":"⇧⌘S"},{"id":"pk-b6be9c27cd","section":"Documents","title":"Print","keys":"⌘P"},{"id":"pk-f73f2f485c","section":"Documents","title":"Quit","keys":"⌘Q"},{"id":"pk-3d5296f82d","section":"Tools","title":"Artboard tool","keys":"⇧O"},{"id":"pk-967e3710da","section":"Tools","title":"Selection tool","keys":"V"},{"id":"pk-3879d8bf03","section":"Tools","title":"Direct Selection tool","keys":"A"},{"id":"pk-97e7f5392d","section":"Tools","title":"Magic Wand tool","keys":"Y"},{"id":"pk-0a657dcb3f","section":"Tools","title":"Lasso tool","keys":"Q"},{"id":"pk-d728bcca87","section":"Tools","title":"Pen tool","keys":"P"},{"id":"pk-8c4aa4b80d","section":"Tools","title":"Curvature tool","keys":"⇧~"},{"id":"pk-c32a517097","section":"Tools","title":"Blob Brush tool","keys":"⇧B"},{"id":"pk-1dd525d029","section":"Tools","title":"Add Anchor Point tool","keys":"+"},{"id":"pk-994e07156f","section":"Tools","title":"Delete Anchor Point tool","keys":"-"},{"id":"pk-c6408d4ff5","section":"Tools","title":"Type tool","keys":"T"},{"id":"pk-65b2f7a8ce","section":"Tools","title":"Line Segment tool","keys":"\\"},{"id":"pk-38a63b33cf","section":"Tools","title":"Rectangle tool","keys":"M"},{"id":"pk-2a3d6bfe94","section":"Tools","title":"Ellipse tool","keys":"L"},{"id":"pk-97898ab2c4","section":"Tools","title":"Paintbrush tool","keys":"B"},{"id":"pk-b5bdbdb6a8","section":"Tools","title":"Pencil tool","keys":"N"},{"id":"pk-6f8431fa4f","section":"Tools","title":"Rotate tool","keys":"R"},{"id":"pk-441fb6a21b","section":"Tools","title":"Scale tool","keys":"S"},{"id":"pk-01bc4f1341","section":"Tools","title":"Free Transform tool","keys":"E"},{"id":"pk-3618f31ef0","section":"Tools","title":"Eyedropper tool","keys":"I"},{"id":"pk-4b981e24f3","section":"Tools","title":"Blend tool","keys":"W"},{"id":"pk-38d7832722","section":"Tools","title":"Mesh tool","keys":"U"},{"id":"pk-649e1845e8","section":"Tools","title":"Gradient tool","keys":"G"},{"id":"pk-53db53944e","section":"Tools","title":"Hand tool","keys":"H"},{"id":"pk-fd640b1991","section":"Tools","title":"Zoom tool","keys":"Z"},{"id":"pk-470e06dc2a","section":"Tools","title":"Scissors tool","keys":"C"},{"id":"pk-7ae17c442a","section":"Tools","title":"Shape Builder tool","keys":"⇧M"},{"id":"pk-48a569216d","section":"Tools","title":"Perspective Grid tool","keys":"⇧P"},{"id":"pk-67462ccd25","section":"Tools","title":"Perspective Selection tool","keys":"⇧V"},{"id":"pk-82c1491314","section":"Viewing","title":"Toggle screen modes","keys":"F"},{"id":"pk-516c13b47b","section":"Viewing","title":"Fit imageable area in window","keys":"Double-click Hand tool"},{"id":"pk-1cf765ec20","section":"Viewing","title":"Magnify 100%","keys":"⌘1"},{"id":"pk-015f1b7db4","section":"Viewing","title":"Temporarily switch to Hand tool","keys":"Space"},{"id":"pk-bec330aa80","section":"Viewing","title":"Hide bounding box","keys":"⇧⌘B"},{"id":"pk-d29f63278e","section":"Viewing","title":"Show/hide artboards","keys":"⇧⌘H"},{"id":"pk-89553d0f95","section":"Viewing","title":"Show/hide artboard rulers","keys":"⌥⌘R"},{"id":"pk-7fa5ce19be","section":"Viewing","title":"Show transparency grid","keys":"⇧⌘D"},{"id":"pk-e4b8a6fa26","section":"Viewing","title":"Toggle Outline / GPU Preview","keys":"⌘Y"},{"id":"pk-357a92ea24","section":"Viewing","title":"Zoom in","keys":"⌘="},{"id":"pk-edabff22c6","section":"Viewing","title":"Zoom out","keys":"⌘-"},{"id":"pk-9c05ad499a","section":"Viewing","title":"Hide guides","keys":"⌘;"},{"id":"pk-4b3dd88a6b","section":"Viewing","title":"Show grid","keys":"⌘'"},{"id":"pk-3e84b73abb","section":"Viewing","title":"Snap to grid","keys":"⇧⌘'"},{"id":"pk-c2c5c37239","section":"Selections","title":"Select all","keys":"⌘A"},{"id":"pk-5749f2dedc","section":"Selections","title":"Deselect","keys":"⇧⌘A"},{"id":"pk-b49934d42f","section":"Selections","title":"Reselect","keys":"⌘6"},{"id":"pk-cc916b36f0","section":"Selections","title":"Group","keys":"⌘G"},{"id":"pk-3bb42b387d","section":"Selections","title":"Ungroup","keys":"⇧⌘G"},{"id":"pk-423be3b1de","section":"Selections","title":"Lock selection","keys":"⌘2"},{"id":"pk-83f00774d5","section":"Selections","title":"Hide selection","keys":"⌘3"},{"id":"pk-57033287fa","section":"Selections","title":"Nudge selection","keys":"Arrow keys"},{"id":"pk-a44c56b3ae","section":"Selections","title":"Nudge selection 10x","keys":"⇧ Arrow keys"},{"id":"pk-2a47ca265c","section":"Selections","title":"Constrain movement to 45°","keys":"Hold ⇧"},{"id":"pk-86555dabee","section":"Selections","title":"Bring forward","keys":"⌘]"},{"id":"pk-b98234348b","section":"Selections","title":"Bring to front","keys":"⇧⌘]"},{"id":"pk-4e9669e155","section":"Selections","title":"Send backward","keys":"⌘["},{"id":"pk-760c9e5dfd","section":"Selections","title":"Send to back","keys":"⇧⌘["},{"id":"pk-c6c5d79a49","section":"Drawing","title":"Constrain proportions or orientation","keys":"⇧-drag"},{"id":"pk-fcda221d94","section":"Drawing","title":"Draw from center","keys":"⌥-drag"},{"id":"pk-696a38ae36","section":"Drawing","title":"Join paths","keys":"⌘J"},{"id":"pk-6c6fdb6d16","section":"Drawing","title":"Average paths","keys":"⌥⌘J"},{"id":"pk-ca6044e6a5","section":"Drawing","title":"Make compound path","keys":"⌘8"},{"id":"pk-1b8a8484c4","section":"Drawing","title":"Release compound path","keys":"⌥⇧⌘8"},{"id":"pk-cd210a21b5","section":"Drawing","title":"Repeat transform in perspective","keys":"⌘D"},{"id":"pk-5dc3f79784","section":"Editing","title":"Pen to Convert Anchor Point tool","keys":"Hold ⌥"},{"id":"pk-fc76c03327","section":"Editing","title":"Make blend","keys":"⌥⌘B"},{"id":"pk-6dc56b03fc","section":"Editing","title":"Release blend","keys":"⌥⇧⌘B"},{"id":"pk-8f453b4667","section":"Editing","title":"Envelope distort: make with warp","keys":"⌥⇧⌘W"},{"id":"pk-8ed75e8b4a","section":"Editing","title":"Envelope distort: make with mesh","keys":"⌥⌘M"},{"id":"pk-0907e38567","section":"Editing","title":"Envelope distort: make with top object","keys":"⌥⌘C"},{"id":"pk-d2009547ea","section":"Objects","title":"Transform again","keys":"⌘D"},{"id":"pk-d08d41d886","section":"Objects","title":"Make clipping mask","keys":"⌘7"},{"id":"pk-5adf3befb3","section":"Objects","title":"Release clipping mask","keys":"⌥⌘7"},{"id":"pk-67386542cb","section":"Objects","title":"Toggle fill / stroke","keys":"X"},{"id":"pk-587dbf1962","section":"Objects","title":"Default fill and stroke","keys":"D"},{"id":"pk-2dd5c29aa2","section":"Objects","title":"Swap fill and stroke","keys":"⇧X"},{"id":"pk-f382867c0e","section":"Type","title":"Bold","keys":"⇧⌘B"},{"id":"pk-eb739389ba","section":"Type","title":"Italic","keys":"⇧⌘I"},{"id":"pk-edcd9d8dde","section":"Type","title":"Underline","keys":"⇧⌘U"},{"id":"pk-72871f2c44","section":"Type","title":"Move one word right or left","keys":"⌘→ or ←"},{"id":"pk-7e9ffdb002","section":"Type","title":"Align left, right, or center","keys":"⇧⌘L, R, or C"},{"id":"pk-c49718337a","section":"Type","title":"Justify all lines","keys":"⇧⌘F"},{"id":"pk-c42528d9c2","section":"Type","title":"Soft return","keys":"⇧Return"},{"id":"pk-a903f4699c","section":"Type","title":"Character panel","keys":"⌘T"},{"id":"pk-f7f0f00d82","section":"Type","title":"Paragraph panel","keys":"⌥⌘T"},{"id":"pk-f643824706","section":"Type","title":"Tabs panel","keys":"⇧⌘T"},{"id":"pk-54e9124b5c","section":"Type","title":"OpenType panel","keys":"⌥⇧⌘T"},{"id":"pk-4915ad7b65","section":"Type","title":"Insert em dash","keys":"⌥⇧-"},{"id":"pk-58f38493f6","section":"Type","title":"Insert en dash","keys":"⌥-"},{"id":"pk-6b92b74154","section":"Type","title":"Superscript","keys":"⇧⌘="}]},{"app":"InDesign","source":"Adobe Help: Default keyboard shortcuts in InDesign","items":[{"id":"pk-b9c2a07766","section":"Tools","title":"Selection tool","keys":"V or Esc"},{"id":"pk-9a92f34513","section":"Tools","title":"Direct Selection tool","keys":"A"},{"id":"pk-b457f115cd","section":"Tools","title":"Toggle Selection / Direct Selection","keys":"⌃⌘Tab"},{"id":"pk-2f6214abf8","section":"Tools","title":"Page tool","keys":"⇧P"},{"id":"pk-b9be49d39b","section":"Tools","title":"Gap tool","keys":"U"},{"id":"pk-14dc778008","section":"Tools","title":"Pen tool","keys":"P"},{"id":"pk-37433516ac","section":"Tools","title":"Add Anchor Point tool","keys":"="},{"id":"pk-bc370549be","section":"Tools","title":"Delete Anchor Point tool","keys":"-"},{"id":"pk-7db2584a68","section":"Tools","title":"Convert Direction Point tool","keys":"⇧C"},{"id":"pk-62638189d9","section":"Tools","title":"Type tool","keys":"T"},{"id":"pk-3d1a3207a9","section":"Tools","title":"Type on a Path tool","keys":"⇧T"},{"id":"pk-f16415bdae","section":"Tools","title":"Pencil tool","keys":"N"},{"id":"pk-02c0821dd2","section":"Tools","title":"Line tool","keys":"\\"},{"id":"pk-511c4cfce5","section":"Tools","title":"Rectangle Frame tool","keys":"F"},{"id":"pk-7a2f503d4e","section":"Tools","title":"Rectangle tool","keys":"M"},{"id":"pk-98eeeb278f","section":"Tools","title":"Ellipse tool","keys":"L"},{"id":"pk-edb2295728","section":"Tools","title":"Rotate tool","keys":"R"},{"id":"pk-0d5155281a","section":"Tools","title":"Scale tool","keys":"S"},{"id":"pk-feeaee5599","section":"Tools","title":"Shear tool","keys":"O"},{"id":"pk-92fab3ff70","section":"Tools","title":"Free Transform tool","keys":"E"},{"id":"pk-ef7053f93f","section":"Tools","title":"Eyedropper tool","keys":"I"},{"id":"pk-0321fdd7f3","section":"Tools","title":"Measure tool","keys":"K"},{"id":"pk-f4d6317b7c","section":"Tools","title":"Gradient tool","keys":"G"},{"id":"pk-e9ceab03b5","section":"Tools","title":"Gradient Feather tool","keys":"⇧G"},{"id":"pk-fb486b73b0","section":"Tools","title":"Scissors tool","keys":"C"},{"id":"pk-0be8b9b3c4","section":"Tools","title":"Hand tool","keys":"H"},{"id":"pk-39d0893038","section":"Tools","title":"Temporary Hand tool (layout)","keys":"Space"},{"id":"pk-9c699adfb5","section":"Tools","title":"Temporary Hand tool (text)","keys":"⌥"},{"id":"pk-dd62fa4d71","section":"Tools","title":"Temporary Hand tool (both modes)","keys":"⌥Space"},{"id":"pk-24a0341f1f","section":"Tools","title":"Zoom tool","keys":"Z"},{"id":"pk-6f4eb27658","section":"Tools","title":"Temporary Zoom In tool","keys":"⌘Space"},{"id":"pk-de652d1b29","section":"Tools","title":"Toggle fill / stroke","keys":"X"},{"id":"pk-0b023850c7","section":"Tools","title":"Swap fill and stroke","keys":"⇧X"},{"id":"pk-7e74d5b784","section":"Tools","title":"Toggle formatting affects container / text","keys":"J"},{"id":"pk-4f2074e3d6","section":"Tools","title":"Apply color","keys":","},{"id":"pk-e2e296d69f","section":"Tools","title":"Apply gradient","keys":"."},{"id":"pk-39cb08c7dd","section":"Tools","title":"Apply none","keys":"/"},{"id":"pk-f7ebc9b7f3","section":"Tools","title":"Toggle Normal view / Preview mode","keys":"W"},{"id":"pk-ecb7302c2d","section":"Selecting and moving","title":"Temporary Selection / Direct Selection tool","keys":"Hold ⌘ (any other tool)"},{"id":"pk-e8b24355eb","section":"Selecting and moving","title":"Select container of selected content","keys":"Esc or double-click"},{"id":"pk-1d6d5b8505","section":"Selecting and moving","title":"Select content of selected container","keys":"⇧Esc or double-click"},{"id":"pk-68036c1032","section":"Selecting and moving","title":"Add to or subtract from selection","keys":"⇧-click"},{"id":"pk-00b230af43","section":"Selecting and moving","title":"Duplicate selection","keys":"⌥-drag"},{"id":"pk-92f94ec64d","section":"Selecting and moving","title":"Duplicate and offset selection","keys":"⌥ Arrow keys"},{"id":"pk-4dfebb4648","section":"Selecting and moving","title":"Duplicate and offset 10x","keys":"⌥⇧ Arrow keys"},{"id":"pk-a52f66fce0","section":"Selecting and moving","title":"Move selection","keys":"Arrow keys"},{"id":"pk-138e2694b2","section":"Selecting and moving","title":"Move selection by 1/10","keys":"⇧⌘ Arrow keys"},{"id":"pk-35508b2a2c","section":"Selecting and moving","title":"Move selection 10x","keys":"⇧ Arrow keys"},{"id":"pk-a2c84a927e","section":"Selecting and moving","title":"Select parent page item from document page","keys":"⇧⌘-click"},{"id":"pk-f5a626fafb","section":"Selecting and moving","title":"Select next object behind","keys":"⌘-click"},{"id":"pk-c1f701a86a","section":"Selecting and moving","title":"Select next object in front","keys":"⌥⌘-click"},{"id":"pk-c9354bf740","section":"Selecting and moving","title":"Select next / previous frame in story","keys":"⌥⌘Page Down / Page Up"},{"id":"pk-abcc9a138f","section":"Selecting and moving","title":"Select first / last frame in story","keys":"⌥⇧⌘Page Down / Page Up"},{"id":"pk-dec4b0783b","section":"Transforming","title":"Duplicate and transform","keys":"⌥-drag with a transform tool"},{"id":"pk-dddf2a2746","section":"Transforming","title":"Transform dialog box","keys":"Double-click Scale, Rotate, or Shear tool"},{"id":"pk-ec02668840","section":"Transforming","title":"Decrease scale 1%","keys":"⌘,"},{"id":"pk-ede492edd6","section":"Transforming","title":"Decrease scale 5%","keys":"⌥⌘,"},{"id":"pk-88dfa7d7ad","section":"Transforming","title":"Increase scale 1%","keys":"⌘."},{"id":"pk-e5928f05ef","section":"Transforming","title":"Increase scale 5%","keys":"⌥⌘."},{"id":"pk-885be4c9f4","section":"Transforming","title":"Resize frame and content","keys":"⌘-drag"},{"id":"pk-c3738ca414","section":"Transforming","title":"Resize frame and content proportionally","keys":"⇧⌘-drag"},{"id":"pk-b6d3d3f415","section":"Transforming","title":"Constrain proportions","keys":"⇧-drag"},{"id":"pk-2cb1682eab","section":"Transforming","title":"High Quality / Fast Display toggle","keys":"⌥⇧⌘Z"},{"id":"pk-820fbee5a1","section":"Paths","title":"Temporary Convert Direction Point tool","keys":"⌥ (with Pen tool)"},{"id":"pk-aad655a04f","section":"Paths","title":"Toggle Add / Delete Anchor Point tool","keys":"⌥"},{"id":"pk-d3e5482534","section":"Paths","title":"Keep Pen tool over a path","keys":"Hold ⇧"},{"id":"pk-7a53efb161","section":"Paths","title":"Move anchor point while drawing","keys":"Hold Space (with Pen tool)"},{"id":"pk-7e13ff297e","section":"Paths","title":"Stroke panel","keys":"⌘F10"},{"id":"pk-9b8625923d","section":"Tables","title":"Next / previous cell","keys":"Tab / ⇧Tab"},{"id":"pk-eeb8c98d0b","section":"Tables","title":"First / last cell in column","keys":"⌥Page Up / Page Down"},{"id":"pk-66af5f1ffb","section":"Tables","title":"First / last cell in row","keys":"⌥Home / End"},{"id":"pk-ef19bfe66a","section":"Tables","title":"First / last row in frame","keys":"Page Up / Page Down"},{"id":"pk-49457b35bc","section":"Tables","title":"Insert or delete rows/columns while dragging","keys":"Hold ⌥ while dragging border"},{"id":"pk-161f056b20","section":"Tables","title":"Resize rows/columns without changing table size","keys":"⇧-drag interior border"},{"id":"pk-7c6b6c5622","section":"Tables","title":"Resize rows/columns proportionally","keys":"⇧-drag right or bottom border"},{"id":"pk-b9583252df","section":"Tables","title":"Toggle text / cell selection","keys":"Esc"},{"id":"pk-dddf5ebf21","section":"Type","title":"Bold","keys":"⇧⌘B"},{"id":"pk-25d9dd1b4e","section":"Type","title":"Italic","keys":"⇧⌘I"},{"id":"pk-9b1e7dc2ca","section":"Type","title":"Normal","keys":"⇧⌘Y"},{"id":"pk-979687eb49","section":"Type","title":"Underline","keys":"⇧⌘U"},{"id":"pk-b168e9b8e5","section":"Type","title":"Strikethrough","keys":"⌃⇧⌘/"},{"id":"pk-d964e10dee","section":"Type","title":"All caps","keys":"⇧⌘K"},{"id":"pk-c56cf4687a","section":"Type","title":"Small caps","keys":"⇧⌘H"},{"id":"pk-fa69e1c5af","section":"Type","title":"Superscript","keys":"⇧⌘+"},{"id":"pk-3c81f30164","section":"Type","title":"Subscript","keys":"⌥⇧⌘+"},{"id":"pk-7bc1d8864b","section":"Type","title":"Reset horizontal / vertical scale to 100%","keys":"⇧⌘X / ⌥⇧⌘X"},{"id":"pk-36955c755f","section":"Type","title":"Align left, right, or center","keys":"⇧⌘L, R, or C"},{"id":"pk-1b4f1a15b4","section":"Type","title":"Justify all lines","keys":"⇧⌘F"},{"id":"pk-0ec07e8a73","section":"Type","title":"Justify all but last line","keys":"⇧⌘J"},{"id":"pk-fe3338cf74","section":"Type","title":"Increase / decrease point size","keys":"⇧⌘> / <"},{"id":"pk-e1c23dc74a","section":"Type","title":"Increase / decrease point size 5x","keys":"⌥⇧⌘> / <"},{"id":"pk-c22a7001d1","section":"Type","title":"Increase / decrease leading","keys":"⌥↑ / ↓"},{"id":"pk-9f8c411c47","section":"Type","title":"Increase / decrease leading 5x","keys":"⌥⌘↑ / ↓"},{"id":"pk-8f813b6dd4","section":"Type","title":"Auto leading","keys":"⌥⇧⌘A"},{"id":"pk-d612c869f2","section":"Type","title":"Align to baseline grid","keys":"⌥⇧⌘G"},{"id":"pk-1db38ba091","section":"Type","title":"Auto-hyphenate on/off","keys":"⌥⇧⌘H"},{"id":"pk-39d52c35b3","section":"Type","title":"Kerning / tracking","keys":"⌥← / →"},{"id":"pk-f2313cd618","section":"Type","title":"Kerning / tracking 5x","keys":"⌥⌘← / →"},{"id":"pk-ba7536df16","section":"Type","title":"Increase kerning between words","keys":"⌥⌘\\"},{"id":"pk-81a1867d0d","section":"Type","title":"Decrease kerning between words","keys":"⌥⌘Delete"},{"id":"pk-cd82160baa","section":"Type","title":"Clear manual kerning, reset tracking","keys":"⌥⌘Q"},{"id":"pk-830b900362","section":"Type","title":"Baseline shift","keys":"⌥⇧↑ / ↓"},{"id":"pk-0de3594a83","section":"Type","title":"Baseline shift 5x","keys":"⌥⇧⌘↑ / ↓"},{"id":"pk-6a032e87ae","section":"Type","title":"Autoflow story","keys":"⇧-click loaded text icon"},{"id":"pk-7c83ede168","section":"Type","title":"Semi-autoflow story","keys":"⌥-click loaded text icon"},{"id":"pk-b19edc9a0b","section":"Type","title":"Recompose all stories","keys":"⌥⌘/"},{"id":"pk-b410b466bc","section":"Type","title":"Insert current page number","keys":"⌥⇧⌘N"}]},{"app":"Photoshop","source":"Noble Desktop Photoshop shortcuts (Mac) + IONOS Photoshop shortcut guide. Adobe's page blocks automated access.","items":[{"id":"pk-b29893dd3a","section":"File","title":"New","keys":"⌘N"},{"id":"pk-15e378c822","section":"File","title":"Open","keys":"⌘O"},{"id":"pk-c4f36efeea","section":"File","title":"Browse in Bridge","keys":"⌥⌘O"},{"id":"pk-36ba3aedbf","section":"File","title":"Close","keys":"⌘W"},{"id":"pk-6ee590e815","section":"File","title":"Close all","keys":"⌥⌘W"},{"id":"pk-03bb4be96b","section":"File","title":"Save","keys":"⌘S"},{"id":"pk-e724cd2404","section":"File","title":"Save As","keys":"⇧⌘S"},{"id":"pk-5af9cde7cc","section":"File","title":"Save for Web (Legacy)","keys":"⌥⇧⌘S"},{"id":"pk-d808b270ad","section":"File","title":"Revert","keys":"F12"},{"id":"pk-a352eec19c","section":"File","title":"File Info","keys":"⌥⇧⌘I"},{"id":"pk-53ea9771dd","section":"File","title":"Print","keys":"⌘P"},{"id":"pk-1f133557e4","section":"Edit","title":"Undo","keys":"⌘Z"},{"id":"pk-7faba1e504","section":"Edit","title":"Redo","keys":"⇧⌘Z"},{"id":"pk-7836e7e64b","section":"Edit","title":"Paste in Place","keys":"⇧⌘V"},{"id":"pk-0518605b49","section":"Edit","title":"Paste Into","keys":"⌥⇧⌘V"},{"id":"pk-0515809bcd","section":"Edit","title":"Fill","keys":"⇧F5"},{"id":"pk-3305b53a99","section":"Edit","title":"Free Transform","keys":"⌘T"},{"id":"pk-b5e07b6f89","section":"Edit","title":"Select all","keys":"⌘A"},{"id":"pk-6a76a312b6","section":"Edit","title":"Inverse selection","keys":"⇧⌘I"},{"id":"pk-507961b6fa","section":"Edit","title":"Deselect","keys":"⌘D"},{"id":"pk-810170b1e3","section":"Edit","title":"Color Settings","keys":"⇧⌘K"},{"id":"pk-ce7a5097e6","section":"Edit","title":"Keyboard Shortcuts","keys":"⌥⇧⌘K"},{"id":"pk-2caafecf7e","section":"Edit","title":"Preferences","keys":"⌘K"},{"id":"pk-22b305781d","section":"Image","title":"Levels","keys":"⌘L"},{"id":"pk-2c2aec1df1","section":"Image","title":"Curves","keys":"⌘M"},{"id":"pk-d58c823ca6","section":"Image","title":"Hue/Saturation","keys":"⌘U"},{"id":"pk-f46c3ab5fb","section":"Image","title":"Color Balance","keys":"⌘B"},{"id":"pk-0077f9a1e1","section":"Image","title":"Black & White","keys":"⌥⇧⌘B"},{"id":"pk-e237462840","section":"Image","title":"Invert","keys":"⌘I"},{"id":"pk-63b2cda026","section":"Image","title":"Desaturate","keys":"⇧⌘U"},{"id":"pk-62f36fe981","section":"Image","title":"Auto Tone","keys":"⇧⌘L"},{"id":"pk-5e45406e1a","section":"Image","title":"Auto Contrast","keys":"⌥⇧⌘L"},{"id":"pk-6f35b06956","section":"Image","title":"Auto Color","keys":"⇧⌘B"},{"id":"pk-3b6de8d810","section":"Image","title":"Image Size","keys":"⌥⌘I"},{"id":"pk-b9dc09926a","section":"Image","title":"Canvas Size","keys":"⌥⌘C"},{"id":"pk-946e41e96d","section":"Layers","title":"New layer via copy","keys":"⌘J"},{"id":"pk-61fad09d6e","section":"Layers","title":"New layer via cut","keys":"⇧⌘J"},{"id":"pk-e8ff75e06f","section":"Layers","title":"Create / release clipping mask","keys":"⌥⌘G"},{"id":"pk-3ee91659bd","section":"Layers","title":"Group layers","keys":"⌘G"},{"id":"pk-e60e2685bd","section":"Layers","title":"Ungroup layers","keys":"⇧⌘G"},{"id":"pk-eb8110555c","section":"Layers","title":"Merge visible","keys":"⇧⌘E"},{"id":"pk-165d9e4170","section":"Layers","title":"Bring to front","keys":"⇧⌘]"},{"id":"pk-52a48e710b","section":"Layers","title":"Send to back","keys":"⇧⌘["},{"id":"pk-e7e09becd5","section":"Selecting","title":"Draw marquee selection from center","keys":"⌥-drag selection"},{"id":"pk-5a3c35e330","section":"Selecting","title":"Add to a selection","keys":"⇧"},{"id":"pk-71d142ef17","section":"Selecting","title":"Subtract from a selection","keys":"⌥"},{"id":"pk-d02fffb1a1","section":"Selecting","title":"Intersect with a selection","keys":"⌥⇧"},{"id":"pk-9298b5ace9","section":"Selecting","title":"Copy the selection with Move tool","keys":"⌥-drag selection"},{"id":"pk-e9b5fc030a","section":"Selecting","title":"Copy the selection when not in Move tool","keys":"⌥⌘-drag selection"},{"id":"pk-871ae2d061","section":"Selecting","title":"Move selection (in 1-pixel increments)","keys":"Arrow keys"},{"id":"pk-bd1b2b59a5","section":"Selecting","title":"Move selection (in 10-pixel increments)","keys":"⇧ Arrow keys"},{"id":"pk-32ded1d020","section":"Selecting","title":"Select opaque pixels on layer","keys":"⌘-click layer thumbnail in Layers panel"},{"id":"pk-9285193a29","section":"Selecting","title":"Reselect last selection","keys":"⇧⌘D"},{"id":"pk-50bc00388c","section":"Selecting","title":"Feather selection","keys":"⇧F6"},{"id":"pk-d9660fc141","section":"Selecting","title":"Move the marquee while drawing it","keys":"Hold Space while drawing"},{"id":"pk-8d64e7971b","section":"Viewing","title":"Fit on Screen","keys":"⌘0 or Double-click on Hand tool"},{"id":"pk-0180b3050b","section":"Viewing","title":"Zoom to 100%","keys":"⌘1 or Double-click on Zoom tool"},{"id":"pk-f920a381b0","section":"Viewing","title":"Zoom in or out","keys":"⌘+ or ⌘-"},{"id":"pk-21e018b8b2","section":"Viewing","title":"Zoom in or out","keys":"Hold Space with ⌘ or ⌥ & click"},{"id":"pk-e1d9b729a8","section":"Viewing","title":"Cycle through fullscreen modes","keys":"F"},{"id":"pk-4921d67f17","section":"Viewing","title":"Scroll image left or right in window","keys":"⇧⌘Page Up/Down"},{"id":"pk-2645bf5ca2","section":"Viewing","title":"Toggle layer mask on/off as rubylith","keys":"\\"},{"id":"pk-b69a24b60c","section":"Layers","title":"Create new layer","keys":"⇧⌘N"},{"id":"pk-5de4a1da37","section":"Layers","title":"Select non-contiguous layers","keys":"⌘-click layers"},{"id":"pk-de68b9ce9a","section":"Layers","title":"Select contiguous layers","keys":"Click one layer, then ⇧-click another layer"},{"id":"pk-2015b15211","section":"Layers","title":"Delete layer","keys":"Delete key"},{"id":"pk-f44616d314","section":"Layers","title":"View contents of layer mask","keys":"⌥-click layer mask icon"},{"id":"pk-f490bbf770","section":"Layers","title":"Temporarily turn off layer mask","keys":"⇧-click layer mask icon"},{"id":"pk-a6ad12e45a","section":"Layers","title":"Duplicate a layer as you move it","keys":"⌥-drag"},{"id":"pk-b3dd8c770e","section":"Layers","title":"Find/Select the appropriate layer","keys":"⌃-click an object with Move tool"},{"id":"pk-4c9a724425","section":"Layers","title":"Change layer opacity","keys":"Number keys (with Move tool selected)"},{"id":"pk-58c7205ec4","section":"Layers","title":"Cycle down or up through blending modes","keys":"⇧+ or -"},{"id":"pk-569cf5765c","section":"Layers","title":"Set blending mode (in Move tool)","keys":"⌥⇧-letter (N=Normal, M=Multiply, etc.)"},{"id":"pk-b318932b4b","section":"Layers","title":"Select the layer below or above current layer","keys":"⌥[ or ]"},{"id":"pk-e664f2e73a","section":"Layers","title":"Send layer backward or forward in stacking order","keys":"⌘[ or ]"},{"id":"pk-46381f2503","section":"Type","title":"Select all text on layer","keys":"Double-click on T thumbnail in Layers panel"},{"id":"pk-46760fb498","section":"Type","title":"Decrease/Increase size of selected text by 1 pt","keys":"⇧⌘< or >"},{"id":"pk-9375bb1e5d","section":"Type","title":"Decrease/Increase size of selected text by 5 pts","keys":"⌥⇧⌘< or >"},{"id":"pk-4b1531b516","section":"Type","title":"Decrease/Increase kerning or tracking","keys":"⌥ Left/→"},{"id":"pk-068520cf79","section":"Type","title":"Align text left/center/right","keys":"⇧⌘L/C/R"},{"id":"pk-0e331b3d57","section":"Painting","title":"Decrease/Increase brush size","keys":"[ or ]"},{"id":"pk-758ca2e1aa","section":"Painting","title":"Decrease/Increase hardness of brush","keys":"⇧[ or ]"},{"id":"pk-197c337f14","section":"Painting","title":"Switch between preset brushes","keys":"< or >"},{"id":"pk-8f69232b28","section":"Painting","title":"Open Brushes pop-up panel","keys":"⌃-click in image window"},{"id":"pk-286d76e864","section":"Painting","title":"Fill selection with Background color","keys":"⌘Delete"},{"id":"pk-d7436ad370","section":"Painting","title":"Fill selection with Foreground color","keys":"⌥Delete"},{"id":"pk-d73c88c319","section":"Painting","title":"Fill selection with Foreground color using Lock Transparent Pixels","keys":"⌥⇧Delete"},{"id":"pk-082812f621","section":"Painting","title":"Fill selection with source state in History panel","keys":"⌥⌘Delete"},{"id":"pk-c1165375b1","section":"Painting","title":"Open the Fill dialog","keys":"⇧Delete"},{"id":"pk-5ff7d8f269","section":"Painting","title":"Sample as background color","keys":"⌥-click with Eyedropper tool"},{"id":"pk-fb5340be8a","section":"Painting","title":"To get Move tool","keys":"While in any painting/editing tool, hold ⌘"},{"id":"pk-04d8cc63d5","section":"Painting","title":"To get Eyedropper with painting tools","keys":"⌥"},{"id":"pk-5232abc51b","section":"Painting","title":"Change paint opacity (with Airbrush OFF)","keys":"Number keys"},{"id":"pk-5e136d7382","section":"Painting","title":"Change Airbrush flow (with Airbrush ON)","keys":"Number keys"},{"id":"pk-2b752bad77","section":"Painting","title":"Change Airbrush flow (with Airbrush OFF)","keys":"⇧ Number keys"},{"id":"pk-fc89df7315","section":"Painting","title":"Change paint opacity (with Airbrush ON)","keys":"⇧ Number keys"},{"id":"pk-333184b204","section":"Painting","title":"Use Crosshair cursor for any painting/editing tool","keys":"turn Caps Lock on"},{"id":"pk-6b89853342","section":"Painting","title":"Erase to History panel’s source state","keys":"⌥Eraser"},{"id":"pk-9f8556e4a1","section":"Painting","title":"Set blending mode (in Brush tool)","keys":"⌥⇧-letter (N=Normal, M=Multiply, etc.)"},{"id":"pk-9b23d97338","section":"Painting","title":"Create fixed color target when in a dialog","keys":"⇧-click in image window"},{"id":"pk-3901dfa24a","section":"Painting","title":"Delete fixed color target","keys":"⌥-click on target with Color Sampler tool"},{"id":"pk-80837fe87a","section":"Painting","title":"Create new Spot Color channel from current selection","keys":"⌘-click on New channel button in Channels panel"},{"id":"pk-a8910530be","section":"Pen Tool & Paths","title":"Get the Direct Selection tool while using Pen tool","keys":"⌘"},{"id":"pk-53b462fa08","section":"Pen Tool & Paths","title":"Switch between Add Anchor and Delete Anchor Point tools","keys":"⌥"},{"id":"pk-e6860e659e","section":"Pen Tool & Paths","title":"In Pen tool, get Convert Point tool when over an anchor point","keys":"⌥"},{"id":"pk-b3c166d05d","section":"Pen Tool & Paths","title":"To select a whole path with Direct Selection tool","keys":"⌥-click"},{"id":"pk-a05fb4dc5d","section":"Pen Tool & Paths","title":"Convert path to a selection","keys":"⌘-click on path thumbnail in Paths panel"},{"id":"pk-4e17a3093f","section":"Show & Hide panels","title":"Hide/Show the Tools & all panels","keys":"Tab"},{"id":"pk-3df79a716e","section":"Show & Hide panels","title":"Hide/Show all panels except Tools & Options bar","keys":"⇧Tab"},{"id":"pk-d6edb26926","section":"Show & Hide panels","title":"Brush Settings","keys":"F5"},{"id":"pk-2971a7223f","section":"Show & Hide panels","title":"Color","keys":"F6"},{"id":"pk-c7a6bd1010","section":"Show & Hide panels","title":"Layers","keys":"F7"},{"id":"pk-da21189b4d","section":"Show & Hide panels","title":"Info","keys":"F8"},{"id":"pk-82b1672dcf","section":"Show & Hide panels","title":"Actions","keys":"⌥F9"},{"id":"pk-7a050471da","section":"Miscellaneous","title":"Temporarily use the Hand tool","keys":"Hold Space"},{"id":"pk-e670a98788","section":"Miscellaneous","title":"Switch between open documents","keys":"⌃Tab or ⌘~"},{"id":"pk-a29b37ba32","section":"Miscellaneous","title":"Toggle Last History State","keys":"⌥⌘Z"},{"id":"pk-c8cef2b791","section":"Miscellaneous","title":"Reapply last filter used","keys":"⌃⌘F"},{"id":"pk-de1c245d50","section":"Miscellaneous","title":"Reset a dialog","keys":"Hold ⌥, Cancel turns into Reset button, click it"},{"id":"pk-f7c057c18e","section":"Miscellaneous","title":"Increase/Decrease value in any option field by 1","keys":"Up/Down arrow"},{"id":"pk-1a89577f67","section":"Miscellaneous","title":"Increase/Decrease value in any option field by 10","keys":"⇧ Up/Down arrow"},{"id":"pk-c6b53c2d93","section":"Miscellaneous","title":"Reapply last transformation","keys":"⇧⌘T"},{"id":"pk-d70f74a04b","section":"Miscellaneous","title":"Measure an angle (protractor)","keys":"With Ruler tool: draw a line, then ⌥-drag end of the ruler line"},{"id":"pk-04ef6492dc","section":"Miscellaneous","title":"Move object while drawing (Crop, Rectangle, Marquee, etc.)","keys":"Hold Space while drawing"},{"id":"pk-3d0162a9b7","section":"Miscellaneous","title":"Snap Guide to Ruler ticks","keys":"Hold ⇧ while dragging"},{"id":"pk-f8766feebb","section":"Miscellaneous","title":"Highlight fields in Options bar (n/a for all tools)","keys":"Return"},{"id":"pk-c2f70090bc","section":"Miscellaneous","title":"Don’t snap object edge while moving","keys":"Hold ⌃ while dragging"},{"id":"pk-a6b2d7d873","section":"Miscellaneous","title":"Open App-Wide Find (find features, tools, files, help, etc.)","keys":"⌘F"},{"id":"pk-7f4e8fbf1a","section":"Tools","title":"Move & Artboard","keys":"V"},{"id":"pk-17cc2a3bf2","section":"Tools","title":"Marquee tools","keys":"M"},{"id":"pk-edf60a9346","section":"Tools","title":"Lasso tools","keys":"L"},{"id":"pk-ecd2a1b3c1","section":"Tools","title":"Quick Selection & Magic Wand","keys":"W"},{"id":"pk-7e355e2c6e","section":"Tools","title":"Crop & Slice tools","keys":"C"},{"id":"pk-5e26dd5a7b","section":"Tools","title":"Frame","keys":"K"},{"id":"pk-40a4d32a8a","section":"Tools","title":"Eyedropper & more","keys":"I"},{"id":"pk-e7a6f778ec","section":"Tools","title":"Spot Healing Brush, Remove, Healing Brush, Patch, Content-Aware Move, & Red Eye","keys":"J"},{"id":"pk-2a1cea912c","section":"Tools","title":"Brushes & Pencil","keys":"B"},{"id":"pk-cde3ce2196","section":"Tools","title":"Clone Stamp & Pattern Stamp","keys":"S"},{"id":"pk-5dd427dfb1","section":"Tools","title":"History Brush & Art History Brush","keys":"Y"},{"id":"pk-8fe7a15603","section":"Tools","title":"Eraser tools","keys":"E"},{"id":"pk-e27e737f2d","section":"Tools","title":"Gradient, Paint Bucket, & 3D Material Drop","keys":"G"},{"id":"pk-24f8de86a6","section":"Tools","title":"Dodge, Burn, & Sponge","keys":"O"},{"id":"pk-2dd38545cc","section":"Tools","title":"Pen tools","keys":"P"},{"id":"pk-346ff0d1b3","section":"Tools","title":"Type tools","keys":"T"},{"id":"pk-d69c47784e","section":"Tools","title":"Path Selection & Direct Selection","keys":"A"},{"id":"pk-217d992b64","section":"Tools","title":"Rectangle & Other Shape tools","keys":"U"}]},{"app":"Premiere Pro","source":"Noble Desktop Premiere Pro shortcuts (Mac)","items":[{"id":"pk-871fbdf6e5","section":"Tools","title":"Selection Tool","keys":"V"},{"id":"pk-420f48450f","section":"Tools","title":"Track Select Forward Tool","keys":"A"},{"id":"pk-3c6365397d","section":"Tools","title":"Track Select Backward Tool","keys":"⇧A"},{"id":"pk-0f65722dcb","section":"Tools","title":"Ripple Edit Tool","keys":"B"},{"id":"pk-67570d64f3","section":"Tools","title":"Rolling Edit Tool","keys":"N"},{"id":"pk-8c8d6e3ea4","section":"Tools","title":"Rate Stretch Tool","keys":"R"},{"id":"pk-a5981264c6","section":"Tools","title":"Razor Tool","keys":"C"},{"id":"pk-0da097de08","section":"Tools","title":"Slip Tool","keys":"Y"},{"id":"pk-75da9f40c8","section":"Tools","title":"Slide Tool","keys":"U"},{"id":"pk-d0986a2dab","section":"Tools","title":"Hand Tool","keys":"H"},{"id":"pk-5af228af3e","section":"Tools","title":"Zoom Tool","keys":"Z"},{"id":"pk-5311defcfb","section":"Tools","title":"Type Tool","keys":"T"},{"id":"pk-a012420b2a","section":"General","title":"Import","keys":"⌘I"},{"id":"pk-09f959cb9d","section":"General","title":"Export Media","keys":"⌘M"},{"id":"pk-833251a09b","section":"General","title":"Create New Project","keys":"⌥⌘N"},{"id":"pk-d11d80c519","section":"General","title":"Create New Sequence","keys":"⌘N"},{"id":"pk-1351de54c4","section":"Interface","title":"Reveal or Focus on Project Panel","keys":"⇧1"},{"id":"pk-c76a05aa6a","section":"Interface","title":"Reveal or Focus on Source Panel","keys":"⇧2"},{"id":"pk-09e3c3ea22","section":"Interface","title":"Reveal or Focus on Timeline Panel","keys":"⇧3"},{"id":"pk-b44bdd92e6","section":"Interface","title":"Reveal or Focus on Program Panel","keys":"⇧4"},{"id":"pk-9598189815","section":"Interface","title":"Reveal or Focus on Effect Controls Panel","keys":"⇧5"},{"id":"pk-2211b7e11f","section":"Interface","title":"Reveal or Focus on Effects Panel","keys":"⇧7"},{"id":"pk-54caf638f2","section":"Interface","title":"Maximize/Restore Panel Size","keys":"Hover Cursor Over Panel–~"},{"id":"pk-bb76688497","section":"Interface","title":"Maximize/Restore Panel Size","keys":"Double-click Panel Name"},{"id":"pk-76ff946fbc","section":"Zooming","title":"Zoom In Time Ruler","keys":"+"},{"id":"pk-1d379439ed","section":"Zooming","title":"Zoom Out Time Ruler","keys":"-"},{"id":"pk-a55e35fb8e","section":"Zooming","title":"Zoom to Fit Timeline","keys":"\\"},{"id":"pk-001776e309","section":"Working in the Project Panel","title":"New Bin","keys":"⌘B"},{"id":"pk-1249988276","section":"Working in the Project Panel","title":"New Bin From Selection","keys":"⇧B"},{"id":"pk-621d25e450","section":"Working in the Project Panel","title":"Find","keys":"⌘F"},{"id":"pk-f4cf74fa43","section":"Working in the Project Panel","title":"Import","keys":"Double-click Any Empty Area"},{"id":"pk-75b03d4585","section":"Working in the Project Panel","title":"Select Object Above","keys":"↑"},{"id":"pk-4f291819b5","section":"Working in the Project Panel","title":"Select Object Below","keys":"↓"},{"id":"pk-70a6908322","section":"Working in the Project Panel","title":"Expand Highlighted Bin","keys":"→ or ⌘↑"},{"id":"pk-205e82f020","section":"Working in the Project Panel","title":"Close Highlighted Bin","keys":"← or ⌘↓"},{"id":"pk-12a5ceb116","section":"Previewing","title":"Play/Stop Toggle","keys":"Space"},{"id":"pk-c1bab7e852","section":"Previewing","title":"Play Backwards","keys":"J"},{"id":"pk-c73d87062d","section":"Previewing","title":"Pause","keys":"K"},{"id":"pk-df7a27181f","section":"Previewing","title":"Play Forwards","keys":"L"},{"id":"pk-8acc36549d","section":"Previewing","title":"Fast Reverse","keys":"JJ"},{"id":"pk-9de3b63376","section":"Previewing","title":"Fast Forward","keys":"LL"},{"id":"pk-a2c3ac852b","section":"Previewing","title":"Step Backwards 1 Frame","keys":"←"},{"id":"pk-cfb616025b","section":"Previewing","title":"Step Forwards 1 Frame","keys":"→"},{"id":"pk-cbbf695631","section":"Previewing","title":"Step Backwards 5 Frame","keys":"⇧←"},{"id":"pk-a55f032891","section":"Previewing","title":"Step Forwards 5 Frame","keys":"⇧→"},{"id":"pk-366d2e460c","section":"Previewing","title":"Go To In Point","keys":"⇧I"},{"id":"pk-4f0573eca6","section":"Previewing","title":"Go To Out Point","keys":"⇧O"},{"id":"pk-c2ea03f684","section":"Previewing","title":"Play In to Out","keys":"⌥K"},{"id":"pk-4bb0f33830","section":"Previewing","title":"Play Around Playhead","keys":"⇧K"},{"id":"pk-0441e562f5","section":"Working with the Timeline","title":"Add Marker","keys":"M"},{"id":"pk-8307211a5b","section":"Working with the Timeline","title":"Add Marker & Open Dialog","keys":"MM"},{"id":"pk-07b197c9f2","section":"Working with the Timeline","title":"Go To Next Marker","keys":"⇧M"},{"id":"pk-3bc5ca21e0","section":"Working with the Timeline","title":"Go To Previous Marker","keys":"⇧⌘M"},{"id":"pk-9b83080912","section":"Working with the Timeline","title":"Mark In Point","keys":"I"},{"id":"pk-83f1ad71cc","section":"Working with the Timeline","title":"Mark Out Point","keys":"O"},{"id":"pk-51f7efc7e9","section":"Working with the Timeline","title":"Clear In","keys":"⌥I"},{"id":"pk-c1d824ffc2","section":"Working with the Timeline","title":"Clear Out","keys":"⌥O"},{"id":"pk-6fe0497f82","section":"Working with the Timeline","title":"Clear In and Out","keys":"⌥X"},{"id":"pk-96d427ee86","section":"Working with the Timeline","title":"Go to Next Edit Point","keys":"↓"},{"id":"pk-88150fe0d0","section":"Working with the Timeline","title":"Go to Previous Edit Point","keys":"↑"},{"id":"pk-4995fd256e","section":"Working with the Timeline","title":"Nudge Clip Forward 1 Frame","keys":"⌥. or ⌘→"},{"id":"pk-d84720d93b","section":"Working with the Timeline","title":"Nudge Clip Back 1 Frame","keys":"⌥, or ⌘←"},{"id":"pk-3b7beb273a","section":"Working with the Timeline","title":"Nudge Clip by 5 Frames","keys":"Add ⇧ to the above keystrokes"},{"id":"pk-af2cb93316","section":"Working with the Timeline","title":"Insert From Source","keys":","},{"id":"pk-684ed26c29","section":"Working with the Timeline","title":"Overwrite From Source","keys":"."},{"id":"pk-fc2df331cc","section":"Working with the Timeline","title":"Snap Playhead on Timeline","keys":"Hold ⇧ While Dragging"},{"id":"pk-df63b47b8a","section":"Working with the Timeline","title":"Mark Selection","keys":"/"},{"id":"pk-35b2d7c490","section":"Working with the Timeline","title":"Mark Clip Under Playhead","keys":"X"},{"id":"pk-52b067c462","section":"Working with the Timeline","title":"Find in Timeline","keys":"⌘F"},{"id":"pk-42cc4ebc97","section":"Working with the Timeline","title":"Select Next Clip in Track","keys":"⌘↑"},{"id":"pk-af92c82700","section":"Working with the Timeline","title":"Select Previous Clip in Track","keys":"⌘↓"},{"id":"pk-3920b438a6","section":"Working with the Timeline","title":"Nudge Clip Up 1 Track","keys":"⌥↑"},{"id":"pk-0efb9c06da","section":"Working with the Timeline","title":"Nudge Clip Down 1 Track","keys":"⌥↓"},{"id":"pk-56210d4d28","section":"Working with the Timeline","title":"Toggle Snapping","keys":"S"},{"id":"pk-1fff6de8cb","section":"Working with the Timeline","title":"Unlink A/V Clip","keys":"⌘L"},{"id":"pk-ec6ef301a4","section":"Working with the Timeline","title":"Make Subclip","keys":"⌘U"},{"id":"pk-7d955e9522","section":"Working with the Timeline","title":"Enable/Disable Clip","keys":"⇧⌘E"},{"id":"pk-d197243e78","section":"Working with the Timeline","title":"Group Clips","keys":"⌘G"},{"id":"pk-31bc4310d4","section":"Working with the Timeline","title":"Ungroup","keys":"⇧⌘G"},{"id":"pk-108c6c42e5","section":"Working with the Timeline","title":"Open Speed/Duration Dialog","keys":"⌘R"},{"id":"pk-f8d183ce07","section":"Working with the Timeline","title":"Edit Original","keys":"⌘E"},{"id":"pk-e142af1000","section":"Working with the Timeline","title":"Get Properties for Selection","keys":"⇧⌘H"}]},{"app":"After Effects","source":"Adobe Help: After Effects keyboard shortcuts reference + Noble Desktop (properties, keyframes)","items":[{"id":"pk-4289136756","section":"General","title":"Duplicate selected item","keys":"⌘D"},{"id":"pk-7f968d439a","section":"General","title":"Deselect all","keys":"F2 or ⇧⌘A"},{"id":"pk-dbe8aad469","section":"General","title":"Rename selected item","keys":"Return"},{"id":"pk-607f2a6e5a","section":"General","title":"Purge all memory","keys":"⌥⌘/ (numpad)"},{"id":"pk-915d53a1f2","section":"Projects","title":"New project","keys":"⌥⌘N"},{"id":"pk-d238cfc166","section":"Projects","title":"Open most recent project","keys":"⌥⇧⌘P"},{"id":"pk-8626b3c226","section":"Projects","title":"New folder in Project panel","keys":"⌥⇧⌘N"},{"id":"pk-b0785feba9","section":"Projects","title":"Project Settings","keys":"⌥⇧⌘K"},{"id":"pk-c8605b9a90","section":"Projects","title":"Preferences","keys":"⌥⌘;"},{"id":"pk-eceb9d1f63","section":"Panels","title":"Project panel","keys":"⌘0"},{"id":"pk-e74cdeb29d","section":"Panels","title":"Render Queue panel","keys":"⌥⌘0"},{"id":"pk-7caa19dc6d","section":"Panels","title":"Effects & Presets panel","keys":"⌘5"},{"id":"pk-f1e50a2947","section":"Panels","title":"Character panel","keys":"⌘6"},{"id":"pk-cb12818e62","section":"Panels","title":"Paragraph panel","keys":"⌘7"},{"id":"pk-cbefd1f990","section":"Panels","title":"Effect Controls for selected layer","keys":"F3 or ⌥⌘T"},{"id":"pk-7200feb662","section":"Panels","title":"Maximize / restore panel under pointer","keys":"`"},{"id":"pk-cc58954e3d","section":"Panels","title":"Toggle Composition / Timeline panel","keys":"\\"},{"id":"pk-e3002fa091","section":"Tools","title":"Selection tool","keys":"V"},{"id":"pk-45c40d10dd","section":"Tools","title":"Hand tool","keys":"H"},{"id":"pk-89d3890207","section":"Tools","title":"Zoom In tool","keys":"Z"},{"id":"pk-676d086af2","section":"Tools","title":"Rotation tool","keys":"W"},{"id":"pk-16e38f2326","section":"Tools","title":"Roto Brush tool","keys":"⌥W"},{"id":"pk-b166d25621","section":"Tools","title":"Camera tools (cycle)","keys":"C"},{"id":"pk-829b97bc3d","section":"Tools","title":"Pan Behind (Anchor Point) tool","keys":"Y"},{"id":"pk-b996196b21","section":"Tools","title":"Mask and shape tools (cycle)","keys":"Q"},{"id":"pk-af09201398","section":"Tools","title":"Type tools (cycle)","keys":"⌘T"},{"id":"pk-64332f56b3","section":"Tools","title":"Pen / Mask Feather tool","keys":"G"},{"id":"pk-3904a9fbb7","section":"Tools","title":"Brush, Clone Stamp, Eraser (cycle)","keys":"⌘B"},{"id":"pk-37e57cc6b0","section":"Tools","title":"Puppet tools (cycle)","keys":"⌘P"},{"id":"pk-9d9e0dbb8b","section":"Compositions","title":"New composition","keys":"⌘N"},{"id":"pk-2841f526db","section":"Compositions","title":"Composition Settings","keys":"⌘K"},{"id":"pk-5e9128df0a","section":"Compositions","title":"Set work area start / end to current time","keys":"B / N"},{"id":"pk-227912ceee","section":"Compositions","title":"Set work area to selected layers","keys":"⌥⌘B"},{"id":"pk-62e34110d1","section":"Compositions","title":"Composition Mini-Flowchart","keys":"Tab"},{"id":"pk-8eddaffacc","section":"Compositions","title":"Trim comp to work area","keys":"⇧⌘X"},{"id":"pk-2d071955af","section":"Time navigation","title":"Go to specific time","keys":"⌥⇧J"},{"id":"pk-16d9de3cec","section":"Time navigation","title":"Go to work area start / end","keys":"⇧Home / End"},{"id":"pk-864f9cf8e0","section":"Time navigation","title":"Previous / next visible item in time ruler","keys":"J / K"},{"id":"pk-3106d7cf66","section":"Time navigation","title":"Go to composition start / end","keys":"Home / End"},{"id":"pk-7df84a44a8","section":"Time navigation","title":"Forward / back 1 frame","keys":"⌘→ / ←"},{"id":"pk-e8399c3d85","section":"Time navigation","title":"Forward / back 10 frames","keys":"⇧⌘→ / ←"},{"id":"pk-f1d09011ec","section":"Time navigation","title":"Go to layer In / Out point","keys":"I / O"},{"id":"pk-d906a68bdb","section":"Time navigation","title":"Scroll to current time in Timeline","keys":"D"},{"id":"pk-dc9f8b3abe","section":"Previews","title":"Start / stop preview","keys":"Space"},{"id":"pk-6da1d4730c","section":"Previews","title":"Take snapshot","keys":"⇧F5"},{"id":"pk-22afd505a6","section":"Previews","title":"Show snapshot","keys":"F5"},{"id":"pk-a991ae9e1e","section":"Views","title":"Zoom in / out (viewer)","keys":". / ,"},{"id":"pk-ebeb6b3453","section":"Views","title":"Zoom to 100%","keys":"/"},{"id":"pk-90d6d771a1","section":"Views","title":"Zoom to fit","keys":"⇧/"},{"id":"pk-dd8027ddc1","section":"Views","title":"Resolution Full / Half","keys":"⌘J / ⇧⌘J"},{"id":"pk-e9d3182a75","section":"Views","title":"Zoom in / out in time","keys":"= / -"},{"id":"pk-42eab6ab13","section":"Views","title":"Show / hide safe zones","keys":"'"},{"id":"pk-0e218e45c9","section":"Views","title":"Show / hide grid","keys":"⌘'"},{"id":"pk-044d73514d","section":"Views","title":"Show / hide rulers","keys":"⌘R"},{"id":"pk-3e2a156f8b","section":"Views","title":"Show / hide guides","keys":"⌘;"},{"id":"pk-619092dbeb","section":"Views","title":"Show / hide layer controls","keys":"⇧⌘H"},{"id":"pk-5bdd3f7456","section":"Footage","title":"Import file","keys":"⌘I"},{"id":"pk-56f86b649e","section":"Footage","title":"Import multiple files","keys":"⌥⌘I"},{"id":"pk-11ffa1bbad","section":"Footage","title":"Add selected items to recent comp","keys":"⌘/"},{"id":"pk-8911e71d7d","section":"Footage","title":"Replace source footage for selected layers","keys":"⌥⌘/"},{"id":"pk-aba7bc07ba","section":"Footage","title":"Interpret Footage","keys":"⌥⌘G"},{"id":"pk-4ce9d20da8","section":"Footage","title":"Reload footage","keys":"⌥⌘L"},{"id":"pk-68b93d1a0b","section":"Effects","title":"Remove all effects from selected layers","keys":"⇧⌘E"},{"id":"pk-b65c9fc386","section":"Effects","title":"Apply most recent effect","keys":"⌥⇧⌘E"},{"id":"pk-c75afdbd9c","section":"Layers","title":"New solid layer","keys":"⌘Y"},{"id":"pk-972d14ea9a","section":"Layers","title":"New null layer","keys":"⌥⇧⌘Y"},{"id":"pk-64ae290de2","section":"Layers","title":"New adjustment layer","keys":"⌥⌘Y"},{"id":"pk-6c75d07369","section":"Layers","title":"Select next / previous layer","keys":"⌘↓ / ↑"},{"id":"pk-3c989c77f8","section":"Layers","title":"Show / hide Switches and Modes columns","keys":"F4"},{"id":"pk-818ea61b09","section":"Layers","title":"Layer settings (solid, null, etc.)","keys":"⇧⌘Y"},{"id":"pk-d51e9dcc8e","section":"Layers","title":"Paste layers at current time","keys":"⌥⌘V"},{"id":"pk-b9bcf8965b","section":"Layers","title":"Split layer","keys":"⇧⌘D"},{"id":"pk-d45e8891b2","section":"Layers","title":"Precompose","keys":"⇧⌘C"},{"id":"pk-79b50a704c","section":"Layers","title":"Reverse layer in time","keys":"⌥⌘R"},{"id":"pk-8fc44b5010","section":"Layers","title":"Enable time remapping","keys":"⌥⌘T"},{"id":"pk-ee065a5363","section":"Layers","title":"Move layer In / Out point to current time","keys":"[ / ]"},{"id":"pk-09c6de8c00","section":"Layers","title":"Trim layer In / Out point to current time","keys":"⌥[ / ]"},{"id":"pk-d9d11f555a","section":"Layers","title":"Add / remove expression","keys":"⌥-click stopwatch"},{"id":"pk-6332d276ff","section":"Layers","title":"Lock selected layers","keys":"⌘L"},{"id":"pk-7274267eb5","section":"Layers","title":"Unlock all layers","keys":"⇧⌘L"},{"id":"pk-f80af49c21","section":"Reveal properties","title":"All Keyframes","keys":"U"},{"id":"pk-06cf810327","section":"Reveal properties","title":"Changed Properties","keys":"UU"},{"id":"pk-6ad3b7a457","section":"Reveal properties","title":"Position","keys":"P"},{"id":"pk-b1cc7f35f1","section":"Reveal properties","title":"Anchor Point","keys":"A"},{"id":"pk-378043a65b","section":"Reveal properties","title":"Rotation","keys":"R"},{"id":"pk-00c4e315e7","section":"Reveal properties","title":"Opacity","keys":"T"},{"id":"pk-393c815a25","section":"Reveal properties","title":"Scale","keys":"S"},{"id":"pk-42c3ad1cb3","section":"Reveal properties","title":"Effects","keys":"E"},{"id":"pk-658fc18abf","section":"Reveal properties","title":"Expressions","keys":"EE"},{"id":"pk-96f4962e5a","section":"Reveal properties","title":"Mask Path","keys":"M"},{"id":"pk-bcfb238904","section":"Reveal properties","title":"All Mask Properties","keys":"MM"},{"id":"pk-fbf47e1ab5","section":"Reveal properties","title":"Audio Levels","keys":"L"},{"id":"pk-df3b3ba8e4","section":"Reveal properties","title":"Audio Waveform","keys":"LL"},{"id":"pk-0b1d4043d2","section":"Keyframes","title":"Jump To Next Keyframe","keys":"K"},{"id":"pk-718ec05305","section":"Keyframes","title":"Jump To Previous Keyframe","keys":"J"},{"id":"pk-fa991bd81f","section":"Keyframes","title":"Add Easy Ease","keys":"F9"},{"id":"pk-f920df44dc","section":"Keyframes","title":"Add Easy Ease In","keys":"⇧F9"},{"id":"pk-bc5dd0fd8c","section":"Keyframes","title":"Add Easy Ease Out","keys":"⇧⌘F9"},{"id":"pk-d1caa3167d","section":"Keyframes","title":"Remove Easing","keys":"⌘-click the Keyframe"},{"id":"pk-087c213239","section":"Keyframes","title":"Add Expression","keys":"⌥-click the Stopwatch"},{"id":"pk-6e461c0699","section":"Keyframes","title":"Move Selected Keyframe Forward 1 Frame","keys":"⌥→"},{"id":"pk-7e16e61abe","section":"Keyframes","title":"Move Selected Keyframe Back 1 Frame","keys":"⌥←"},{"id":"pk-f0962fa4e4","section":"Keyframes","title":"Move Selected Keyframe Forward 10 Frames","keys":"⌥⇧→"},{"id":"pk-1b41722d4b","section":"Keyframes","title":"Move Selected Keyframe Back 10 Frames","keys":"⌥⇧←"},{"id":"pk-274ede487a","section":"Keyframes","title":"Create Position Keyframe","keys":"⌥P"},{"id":"pk-f51da2b7b2","section":"Keyframes","title":"Create Anchor Point Keyframe","keys":"⌥A"},{"id":"pk-7ef9a5adb0","section":"Keyframes","title":"Create Rotation Keyframe","keys":"⌥R"},{"id":"pk-28c7b16fda","section":"Keyframes","title":"Create Opacity Keyframe","keys":"⌥T"},{"id":"pk-84ece60771","section":"Keyframes","title":"Create Scale Keyframe","keys":"⌥S"},{"id":"pk-cdd325c263","section":"Rendering","title":"Add to Media Encoder Queue","keys":"⌥⌘M"},{"id":"pk-fcc9b8950e","section":"Rendering","title":"Add to Render Queue","keys":"⌃⌘M"},{"id":"pk-eeb119db6c","section":"Layers","title":"Center Anchor Point","keys":"⌥⌘Home"},{"id":"pk-d2e3473d38","section":"Layers","title":"Center Layer in View","keys":"⌘Home"}]},{"app":"Lightroom Classic","source":"Adobe Help: Lightroom Classic keyboard shortcuts","items":[{"id":"pk-b707572b89","section":"Panels","title":"Show / hide side panels","keys":"Tab"},{"id":"pk-b31ee1fd7e","section":"Panels","title":"Show / hide all panels","keys":"⇧Tab"},{"id":"pk-83c5aedd44","section":"Panels","title":"Show / hide toolbar","keys":"T"},{"id":"pk-c6a1f52043","section":"Panels","title":"Show / hide Module Picker","keys":"F5"},{"id":"pk-0d6cbcc80f","section":"Panels","title":"Show / hide Filmstrip","keys":"F6"},{"id":"pk-5b57f0fd4b","section":"Panels","title":"Solo mode","keys":"⌥-click a panel"},{"id":"pk-48fe7d3994","section":"Modules","title":"Library","keys":"⌥⌘1"},{"id":"pk-2aec3b58e8","section":"Modules","title":"Develop","keys":"⌥⌘2"},{"id":"pk-8f676bff7e","section":"Modules","title":"Map","keys":"⌥⌘3"},{"id":"pk-ae84c99042","section":"Modules","title":"Book","keys":"⌥⌘4"},{"id":"pk-822f560cf9","section":"Modules","title":"Slideshow","keys":"⌥⌘5"},{"id":"pk-868b126396","section":"Modules","title":"Print","keys":"⌥⌘6"},{"id":"pk-3230acacf4","section":"Modules","title":"Web","keys":"⌥⌘7"},{"id":"pk-229cb5218c","section":"Modules","title":"Back to previous module","keys":"⌥⌘↑"},{"id":"pk-bf8782f449","section":"View modes","title":"Loupe view","keys":"E"},{"id":"pk-83cd431d70","section":"View modes","title":"Grid view","keys":"G"},{"id":"pk-26b8229d2d","section":"View modes","title":"Compare view","keys":"C"},{"id":"pk-241447bf1c","section":"View modes","title":"Survey view","keys":"N"},{"id":"pk-27aada0d9d","section":"View modes","title":"Open in Develop","keys":"D"},{"id":"pk-9933017a39","section":"View modes","title":"Cycle Lights Out","keys":"L"},{"id":"pk-9f6c844763","section":"View modes","title":"Lights Dim","keys":"⇧⌘L"},{"id":"pk-4c5a651e7b","section":"View modes","title":"Cycle screen modes","keys":"F"},{"id":"pk-ebb8dc8bf3","section":"View modes","title":"Cycle info overlay","keys":"I"},{"id":"pk-f0433eaa95","section":"View modes","title":"Show / hide info overlay","keys":"⌘I"},{"id":"pk-07960ac42f","section":"View modes","title":"Reference view","keys":"⇧R"},{"id":"pk-a6f9faa393","section":"View modes","title":"Loupe overlay","keys":"⌥⌘O"},{"id":"pk-47eb8e0f31","section":"View modes","title":"Zoom to 100%","keys":"⌥⌘0"},{"id":"pk-7dd713cedd","section":"View modes","title":"People view","keys":"O"},{"id":"pk-cbd053c505","section":"View modes","title":"Toggle HDR view","keys":"⇧H"},{"id":"pk-d8a34f960e","section":"Library","title":"Toggle zoom","keys":"Z"},{"id":"pk-075a0930bf","section":"Library","title":"Zoom in / out","keys":"⌘= / -"},{"id":"pk-fb67a3f50a","section":"Library","title":"Thumbnail size up / down","keys":"= / -"},{"id":"pk-ae8bed676e","section":"Library","title":"Cycle Grid views","keys":"J"},{"id":"pk-66585c73ca","section":"Library","title":"Library view options","keys":"⌘J"},{"id":"pk-ce523ff5b3","section":"Library","title":"Next / previous photo","keys":"→ / ←"},{"id":"pk-df67457200","section":"Library","title":"Impromptu slideshow","keys":"⌘Return"},{"id":"pk-ede927e686","section":"Library","title":"Select all","keys":"⌘A"},{"id":"pk-3ede516765","section":"Library","title":"Deselect all","keys":"⌘D"},{"id":"pk-0978355619","section":"Library","title":"Select only active photo","keys":"⇧⌘D"},{"id":"pk-d93835a365","section":"Library","title":"Select flagged photos","keys":"⌥⌘A"},{"id":"pk-77ade05800","section":"Library","title":"Group into stack","keys":"⌘G"},{"id":"pk-63b5688dbd","section":"Library","title":"Unstack","keys":"⇧⌘G"},{"id":"pk-f79320ca13","section":"Library","title":"Toggle stack","keys":"S"},{"id":"pk-7cfe3fa739","section":"Library","title":"Move to top of stack","keys":"⇧S"},{"id":"pk-fda1b175e3","section":"Rating and flagging","title":"Set star rating","keys":"1–5"},{"id":"pk-ffbcc5d5d1","section":"Rating and flagging","title":"Set star rating and go to next","keys":"⇧1–5"},{"id":"pk-f27f72ee8b","section":"Rating and flagging","title":"Remove star rating","keys":"0"},{"id":"pk-3de94141d5","section":"Rating and flagging","title":"Increase / decrease rating","keys":"] / ["},{"id":"pk-e6742f76fb","section":"Rating and flagging","title":"Flag as pick","keys":"P"},{"id":"pk-2a459c122e","section":"Rating and flagging","title":"Flag as pick and go to next","keys":"⇧P"},{"id":"pk-9df0c85df5","section":"Rating and flagging","title":"Flag as reject","keys":"X"},{"id":"pk-73c3f67310","section":"Rating and flagging","title":"Flag as reject and go to next","keys":"⇧X"},{"id":"pk-b130e34c47","section":"Rating and flagging","title":"Unflag","keys":"U"},{"id":"pk-71c8670f4a","section":"Rating and flagging","title":"Cycle flag settings","keys":"`"},{"id":"pk-aa3a52a704","section":"Rating and flagging","title":"Refine photos","keys":"⌥⌘R"},{"id":"pk-4395307df3","section":"Rating and flagging","title":"Show / hide Library Filter bar","keys":"\\"},{"id":"pk-b8fb780e73","section":"Rating and flagging","title":"Toggle filters","keys":"⌘L"},{"id":"pk-fbb05bdbe8","section":"Rating and flagging","title":"Find photo","keys":"⌘F"},{"id":"pk-6b8937df17","section":"Color labels","title":"Red label","keys":"6"},{"id":"pk-40b732d780","section":"Color labels","title":"Yellow label","keys":"7"},{"id":"pk-9622c959b5","section":"Color labels","title":"Green label","keys":"8"},{"id":"pk-96fddd85e7","section":"Color labels","title":"Blue label","keys":"9"},{"id":"pk-4a4595d071","section":"Color labels","title":"Label and go to next","keys":"⇧6–9"},{"id":"pk-dd247e2182","section":"Collections","title":"New collection","keys":"⌘N"},{"id":"pk-cefdbb9343","section":"Collections","title":"Add to Quick Collection","keys":"B"},{"id":"pk-1fb32599d0","section":"Collections","title":"Show Quick Collection","keys":"⌘B"},{"id":"pk-e3986efc74","section":"Collections","title":"Save Quick Collection","keys":"⌥⌘B"},{"id":"pk-0b16805fbd","section":"Collections","title":"Clear Quick Collection","keys":"⇧⌘B"},{"id":"pk-54d1bc2ea8","section":"Collections","title":"Set target collection","keys":"⌥⇧⌘B"},{"id":"pk-935a7da0ca","section":"Keywords and metadata","title":"Add keywords","keys":"⌘K"},{"id":"pk-d2155ed459","section":"Keywords and metadata","title":"Edit keywords","keys":"⇧⌘K"},{"id":"pk-a553a24201","section":"Keywords and metadata","title":"Enable painting","keys":"⌥⌘K"},{"id":"pk-fe799186a0","section":"Keywords and metadata","title":"Copy metadata","keys":"⌥⇧⌘C"},{"id":"pk-86a58da559","section":"Keywords and metadata","title":"Paste metadata","keys":"⌥⇧⌘V"},{"id":"pk-8ba618af4d","section":"Keywords and metadata","title":"Save metadata to file","keys":"⌘S"},{"id":"pk-028b6ed4ae","section":"Import and export","title":"Import photos","keys":"⇧⌘I"},{"id":"pk-5a6da9c010","section":"Import and export","title":"Open catalog","keys":"⇧⌘O"},{"id":"pk-0a3ac53705","section":"Import and export","title":"Preferences","keys":"⌘,"},{"id":"pk-84807eef71","section":"Import and export","title":"Catalog Settings","keys":"⌥⌘,"},{"id":"pk-9d7df55b3b","section":"Import and export","title":"Create virtual copy","keys":"⌘'"},{"id":"pk-5edc73cf9b","section":"Import and export","title":"Show in Finder","keys":"⌘R"},{"id":"pk-9234f17f23","section":"Import and export","title":"Rename photo","keys":"F2"},{"id":"pk-65bbe892fd","section":"Import and export","title":"Remove from catalog","keys":"⌥Delete"},{"id":"pk-d5496a2fee","section":"Import and export","title":"Delete rejected photos","keys":"⌘Delete"},{"id":"pk-e1634287da","section":"Import and export","title":"Edit in Photoshop","keys":"⌘E"},{"id":"pk-98438071b1","section":"Import and export","title":"Open as Smart Object in Photoshop","keys":"⌥⌘X"},{"id":"pk-4f0d16ff23","section":"Import and export","title":"Export","keys":"⇧⌘E"},{"id":"pk-18be85391e","section":"Import and export","title":"Export with previous settings","keys":"⌥⇧⌘E"},{"id":"pk-3250daf470","section":"Import and export","title":"Print","keys":"⌘P"},{"id":"pk-5ec642eaee","section":"Import and export","title":"Tethered capture","keys":"F12"},{"id":"pk-79165701c4","section":"Import and export","title":"Enhance dialog","keys":"⌃⌥I"},{"id":"pk-c55ca1cea2","section":"Import and export","title":"HDR merge","keys":"⌃H"},{"id":"pk-667472fb23","section":"Import and export","title":"Panorama merge","keys":"⌃M"},{"id":"pk-a960346c87","section":"Develop tools","title":"Convert to grayscale","keys":"V"},{"id":"pk-6fba22b54b","section":"Develop tools","title":"White Balance tool","keys":"W"},{"id":"pk-b3e798a3d1","section":"Develop tools","title":"Crop tool","keys":"R"},{"id":"pk-31a07854a2","section":"Develop tools","title":"Constrain crop aspect ratio","keys":"A"},{"id":"pk-15279c1f0f","section":"Develop tools","title":"Crop to previous aspect ratio","keys":"⇧A"},{"id":"pk-546c108187","section":"Develop tools","title":"Cycle crop grid overlay","keys":"O"},{"id":"pk-b2a9ef7e36","section":"Develop tools","title":"Cycle crop overlay orientation","keys":"⇧O"},{"id":"pk-288d3be80c","section":"Develop tools","title":"Switch crop portrait / landscape","keys":"X"},{"id":"pk-bf28ae0bce","section":"Develop tools","title":"Reset crop","keys":"⌥⌘R"},{"id":"pk-0b236b255d","section":"Develop tools","title":"Guided Upright tool","keys":"⇧T"},{"id":"pk-d110853057","section":"Develop tools","title":"Spot Removal tool","keys":"Q"},{"id":"pk-e6d327c225","section":"Develop tools","title":"Adjustment Brush","keys":"K"},{"id":"pk-460bcb3800","section":"Develop tools","title":"Graduated Filter tool","keys":"M"},{"id":"pk-a634d87df0","section":"Develop tools","title":"Radial filter","keys":"⇧M"},{"id":"pk-f00d88885b","section":"Develop tools","title":"Luminance filter","keys":"⇧Q"},{"id":"pk-34b5e57a54","section":"Develop tools","title":"Color range","keys":"⇧J"},{"id":"pk-06e03d7d5c","section":"Masking","title":"Brush size up / down","keys":"] / ["},{"id":"pk-84edcb4895","section":"Masking","title":"Brush feather up / down","keys":"⇧] / ["},{"id":"pk-99a7ed0eda","section":"Masking","title":"Switch brush A / B","keys":"/"},{"id":"pk-397a21cc31","section":"Masking","title":"Temporary eraser","keys":"⌥-drag"},{"id":"pk-589a018aa4","section":"Masking","title":"Show / hide pins","keys":"H"},{"id":"pk-947ac24265","section":"Masking","title":"Show / hide mask overlay","keys":"O"},{"id":"pk-04bce224d9","section":"Masking","title":"Cycle mask overlay colors","keys":"⇧O"},{"id":"pk-8f7509a576","section":"Masking","title":"Open / close Masking","keys":"⇧W"},{"id":"pk-f5ac604871","section":"Masking","title":"Targeted Adjustment: Tone Curve","keys":"⌥⇧⌘T"},{"id":"pk-6c54eaff16","section":"Masking","title":"Targeted Adjustment: Hue","keys":"⌥⇧⌘H"},{"id":"pk-0cca5c83c5","section":"Masking","title":"Targeted Adjustment: Saturation","keys":"⌥⇧⌘S"},{"id":"pk-8effc9c35a","section":"Masking","title":"Targeted Adjustment: Luminance","keys":"⌥⇧⌘L"},{"id":"pk-70ec6ced67","section":"Masking","title":"Exit Targeted Adjustment","keys":"⌥⇧⌘N"},{"id":"pk-6fa098f57e","section":"Before and after","title":"Show clipping","keys":"J"},{"id":"pk-19fed433bb","section":"Before and after","title":"Before / after left-right","keys":"Y"},{"id":"pk-f74bbbeb69","section":"Before and after","title":"Before / after top-bottom","keys":"⌥Y"},{"id":"pk-e0bd44212f","section":"Before and after","title":"Before / after split","keys":"⇧Y"},{"id":"pk-174bf12dbd","section":"Before and after","title":"Before only","keys":"\\"},{"id":"pk-44c9d57bf2","section":"Settings and sync","title":"Auto tone","keys":"⌘U"},{"id":"pk-632705bee4","section":"Settings and sync","title":"Auto white balance","keys":"⇧⌘U"},{"id":"pk-147813a1bc","section":"Settings and sync","title":"Copy Develop settings","keys":"⇧⌘C"},{"id":"pk-48cd35f2da","section":"Settings and sync","title":"Paste Develop settings","keys":"⇧⌘V"},{"id":"pk-4a6a93422c","section":"Settings and sync","title":"Paste settings from previous","keys":"⌥⌘V"},{"id":"pk-3857c11f65","section":"Settings and sync","title":"Sync settings","keys":"⇧⌘S"},{"id":"pk-b909d5ad23","section":"Settings and sync","title":"Sync without dialog","keys":"⌥⌘S"},{"id":"pk-708e7d927d","section":"Settings and sync","title":"Enable Auto Sync","keys":"⌥⇧⌘A"},{"id":"pk-3b4379ee98","section":"Settings and sync","title":"Match total exposures","keys":"⌥⇧⌘M"},{"id":"pk-f0434497ad","section":"Settings and sync","title":"Reset all settings","keys":"⇧⌘R"},{"id":"pk-74cc2d3d0a","section":"Settings and sync","title":"Reset a slider","keys":"Double-click slider name"},{"id":"pk-962fbf9d3d","section":"Settings and sync","title":"Next / previous Basic panel setting","keys":". / ,"},{"id":"pk-6264414af3","section":"Develop viewing","title":"Toggle Loupe / 1:1 zoom","keys":"Space or Z"},{"id":"pk-70aa08e514","section":"Develop viewing","title":"Rotate right / left","keys":"⌘] / ["},{"id":"pk-67481ec79b","section":"Develop viewing","title":"New snapshot","keys":"⌘N"},{"id":"pk-b04f4d2979","section":"Develop viewing","title":"New preset","keys":"⇧⌘N"},{"id":"pk-b524e60052","section":"Develop viewing","title":"Soft proofing","keys":"S"}]},{"app":"Figma","source":"Noble Desktop Figma shortcuts (Mac) + Figma Help Center + Devlin Peck cheat sheet. Figma publishes no full list outside the app's shortcuts panel (⌃⇧?).","items":[{"id":"pk-b0b7c88057","section":"Tools","title":"Move","keys":"V"},{"id":"pk-e0c9285115","section":"Tools","title":"Scale","keys":"K"},{"id":"pk-2959281317","section":"Tools","title":"Frame","keys":"F"},{"id":"pk-6609f48fbb","section":"Tools","title":"Section","keys":"⇧S"},{"id":"pk-c85771082f","section":"Tools","title":"Slice","keys":"S"},{"id":"pk-addab598a2","section":"Tools","title":"Rectangle","keys":"R"},{"id":"pk-ec4b9d6e9b","section":"Tools","title":"Line","keys":"L"},{"id":"pk-b5ed5a8c0c","section":"Tools","title":"Arrow","keys":"⇧L"},{"id":"pk-1146112193","section":"Tools","title":"Ellipse","keys":"O"},{"id":"pk-853b611c14","section":"Tools","title":"Image/video","keys":"⇧⌘K"},{"id":"pk-e9c2fec2ed","section":"Tools","title":"Pen","keys":"P"},{"id":"pk-1e723a12a2","section":"Tools","title":"Pencil","keys":"⇧P"},{"id":"pk-9a6dced895","section":"Tools","title":"Text","keys":"T"},{"id":"pk-2de431a275","section":"Tools","title":"Resources","keys":"⇧I"},{"id":"pk-aa28c8d87f","section":"Tools","title":"Hand","keys":"H"},{"id":"pk-a06efc683d","section":"Tools","title":"Comment","keys":"C"},{"id":"pk-07f4e44f17","section":"Tools","title":"Eyedropper","keys":"I or ⌃C"},{"id":"pk-97e49d3447","section":"Zoom","title":"Zoom In","keys":"⌘+"},{"id":"pk-d29bee33ec","section":"Zoom","title":"Zoom Out","keys":"⌘-"},{"id":"pk-5cb43eecef","section":"Zoom","title":"Get the Zoom In tool without selecting it","keys":"Hold Z"},{"id":"pk-66ca8963cc","section":"Zoom","title":"Get the Zoom Out tool without selecting it","keys":"Hold ⌥Z"},{"id":"pk-3a43a40401","section":"Zoom","title":"Zoom to 100%","keys":"⌘0"},{"id":"pk-504b954179","section":"Zoom","title":"Zoom to Fit","keys":"⇧1"},{"id":"pk-81b3c1b835","section":"Zoom","title":"Zoom to Selection","keys":"⇧2"},{"id":"pk-e68a6b0195","section":"Zoom","title":"Zoom to Next or Previous Frame","keys":"N or ⇧N"},{"id":"pk-eed1062093","section":"Interface & Viewing Options","title":"Pan/Scroll Around Canvas (Hand tool)","keys":"Hold Space & Drag"},{"id":"pk-d6813b53a7","section":"Interface & Viewing Options","title":"Show/Hide Rulers (Show/Hide guides)","keys":"⇧R"},{"id":"pk-bbe492bbda","section":"Interface & Viewing Options","title":"Show/Hide Layout grids","keys":"⇧G"},{"id":"pk-eb75e22d42","section":"Interface & Viewing Options","title":"Increase/Decrease a value by 1","keys":"Up or ↓"},{"id":"pk-306323b822","section":"Interface & Viewing Options","title":"Increase/Decrease a value by 10","keys":"Hold ⇧ & Up or ↓"},{"id":"pk-2ed28866d8","section":"Interface & Viewing Options","title":"Scrub over a value without an icon","keys":"Hold ⌥ & Drag Left/Right"},{"id":"pk-e866ce9bf5","section":"Interface & Viewing Options","title":"Show/Hide Comments","keys":"⇧C"},{"id":"pk-03b7450d2d","section":"Interface & Viewing Options","title":"Show/Hide Multiplayer Cursors","keys":"⌥⌘\\"},{"id":"pk-fb9a7b0ddd","section":"Interface & Viewing Options","title":"Switch between Tabs (Files)","keys":"⌃Tab"},{"id":"pk-72f1d498ef","section":"Interface & Viewing Options","title":"Toggle Dev Mode","keys":"⇧D"},{"id":"pk-213d1ade8d","section":"Interface & Viewing Options","title":"Show/Hide Outlines","keys":"⇧O"},{"id":"pk-6d52063f39","section":"Panels","title":"Show/Hide UI (hide all panels & toolbar)","keys":"⌘\\"},{"id":"pk-523501d757","section":"Panels","title":"Show/Hide Left Sidebar (Layers & Assets panels)","keys":"⇧⌘\\"},{"id":"pk-8731c463f8","section":"Panels","title":"Show Layers panel","keys":"⌥1"},{"id":"pk-a9299ee955","section":"Panels","title":"Show Assets panel","keys":"⌥2"},{"id":"pk-3cde0f2afb","section":"Panels","title":"Show Libraries panel","keys":"⌥3"},{"id":"pk-7a73e188bd","section":"Panels","title":"Switch between Design and Prototype panels","keys":"⇧E"},{"id":"pk-1ef714e7d1","section":"Panels","title":"Show Design panel","keys":"⌥8"},{"id":"pk-5232188ecc","section":"Panels","title":"Show Prototype panel","keys":"⌥9"},{"id":"pk-0484dad372","section":"Layers (Objects), Groups, & Frames","title":"Rename Selected Layer (Object)","keys":"⌘R"},{"id":"pk-58b7243a6e","section":"Layers (Objects), Groups, & Frames","title":"Select Children","keys":"Return"},{"id":"pk-9405debec9","section":"Layers (Objects), Groups, & Frames","title":"Select Next or Previous Sibling","keys":"Tab or ⇧Tab"},{"id":"pk-7d8026c11f","section":"Layers (Objects), Groups, & Frames","title":"Select Parent","keys":"\\ or ⇧Return"},{"id":"pk-32e6264df5","section":"Layers (Objects), Groups, & Frames","title":"Select something in a Group (Deep Select)","keys":"⌘-click or Drag"},{"id":"pk-b1425575e3","section":"Layers (Objects), Groups, & Frames","title":"Deselect","keys":"Esc"},{"id":"pk-df699dd108","section":"Layers (Objects), Groups, & Frames","title":"Hide/Show Selection","keys":"⇧⌘H"},{"id":"pk-72aaba4635","section":"Layers (Objects), Groups, & Frames","title":"Lock/Unlock Selection","keys":"⇧⌘L"},{"id":"pk-38d2697a5c","section":"Layers (Objects), Groups, & Frames","title":"Draw Shape from Center","keys":"⌥Drag"},{"id":"pk-c3e958a636","section":"Layers (Objects), Groups, & Frames","title":"Draw Shape with 1:1 Aspect Ratio (ie: Square or Circle)","keys":"⇧Drag"},{"id":"pk-2ca2cc82de","section":"Layers (Objects), Groups, & Frames","title":"Change Layer Opacity","keys":"1 to 9 (0 for 100%)"},{"id":"pk-c783b08e62","section":"Layers (Objects), Groups, & Frames","title":"Use as Mask","keys":"⌃⌘M"},{"id":"pk-d77e2182c4","section":"Layers (Objects), Groups, & Frames","title":"Group Selection","keys":"⌘G"},{"id":"pk-1c6f772e60","section":"Layers (Objects), Groups, & Frames","title":"Frame Selection","keys":"⌥⌘G"},{"id":"pk-42fcf8ed32","section":"Layers (Objects), Groups, & Frames","title":"Ungroup/Unframe Selection","keys":"⌘Delete"},{"id":"pk-c1c2b24a2e","section":"Layers (Objects), Groups, & Frames","title":"Add auto layout","keys":"⇧A"},{"id":"pk-fc4ce0efc3","section":"Layers (Objects), Groups, & Frames","title":"Remove auto layout","keys":"⌥⇧A"},{"id":"pk-064def7108","section":"Layers (Objects), Groups, & Frames","title":"Prevent an object from nesting into another frame (such as auto layout)","keys":"Start dragging an object & then hold Space"},{"id":"pk-7b97d13d64","section":"Layers (Objects), Groups, & Frames","title":"Prevent an object from leaving the frame it’s nested in","keys":"Start dragging an object & then hold Space"},{"id":"pk-eaa4f00400","section":"Layers (Objects), Groups, & Frames","title":"Select Frame","keys":"⌘-click on a blank part of frame"},{"id":"pk-46fafffb64","section":"Layers (Objects), Groups, & Frames","title":"Start Cropping an Image","keys":"Hold ⌥ & double-click an image"},{"id":"pk-cd9bd45a7e","section":"Layers (Objects), Groups, & Frames","title":"Ignore Constraints or Crop Image","keys":"Hold ⌘ while resizing"},{"id":"pk-bb3a6fd219","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Send to Back or Bring to Front","keys":"[ or ]"},{"id":"pk-30209dfc19","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Send Backward or Bring Forward (One Layer)","keys":"⌘[ or ]"},{"id":"pk-d06c9a6318","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Align Left & Right","keys":"⌥A or D"},{"id":"pk-07499fd3a4","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Align Top & Bottom","keys":"⌥W or S"},{"id":"pk-47ca4aa785","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Align Center (Horizontal & Vertical)","keys":"⌥H or V"},{"id":"pk-95dbd4ce32","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Distribute Spacing (Horizontal & Vertical)","keys":"⌃⌥H or V"},{"id":"pk-c38e3b844c","section":"Arrange, Align, & Distribute Layers (Objects)","title":"Tidy Up","keys":"⌃⌥T"},{"id":"pk-ecad1b87bd","section":"Duplicating & Transforming Layers (Objects)","title":"Duplicate","keys":"⌥Drag (or ⌘D)"},{"id":"pk-dabb00cd78","section":"Duplicating & Transforming Layers (Objects)","title":"Constrain Object Rotation by 15° (Lines by 45°)","keys":"⇧Drag"},{"id":"pk-5ab84d322e","section":"Duplicating & Transforming Layers (Objects)","title":"Resize from Center","keys":"⌥Drag"},{"id":"pk-983d30bfba","section":"Type","title":"Start Editing Selected Text","keys":"Return"},{"id":"pk-45a36cf3bf","section":"Type","title":"Stop Editing Selected Text","keys":"Esc"},{"id":"pk-00fd82a638","section":"Type","title":"Decrease or Increase Font Size","keys":"⇧⌘< or >"},{"id":"pk-e21d163f63","section":"Type","title":"Decrease or Increase Line Height","keys":"⌥⇧< or >"},{"id":"pk-2b5735a773","section":"Type","title":"Decrease or Increase Font Weight","keys":"⌥⌘< or >"},{"id":"pk-bf510183b7","section":"Type","title":"Decrease or Increase Letter Spacing","keys":"⌥< or >"},{"id":"pk-79390ed59d","section":"Type","title":"Bold or Italic or Underline","keys":"⌘B or ⌘I or ⌘U"},{"id":"pk-926adacff9","section":"Type","title":"Turn into a numbered or bulleted list","keys":"⇧⌘7 or 8"},{"id":"pk-e350bcf795","section":"Type","title":"Create Link","keys":"⌘K"},{"id":"pk-0783ca3e42","section":"Type","title":"Flatten Selection (Convert Text to Vector Path/Outlines)","keys":"⌘E"},{"id":"pk-2173209460","section":"Type","title":"Text align left, center, right, or justified","keys":"⌥⌘L or T or R or J"},{"id":"pk-f71fb555ca","section":"Vector Editing","title":"Remove Fill","keys":"⌥/"},{"id":"pk-7c629d4008","section":"Vector Editing","title":"Remove Stroke","keys":"⇧/"},{"id":"pk-3063df6e54","section":"Vector Editing","title":"Swap Fill & Stroke","keys":"⇧X"},{"id":"pk-2c0a8ed7fe","section":"Vector Editing","title":"Start Editing Selected Vector Object","keys":"Return (or Double-click)"},{"id":"pk-bde3809ced","section":"Vector Editing","title":"Stop Editing Selected Vector Object","keys":"Esc"},{"id":"pk-e28a89e66a","section":"Vector Editing","title":"Switch Between Straight & Mirrored Points","keys":"⌘-click"},{"id":"pk-0c2036d2a9","section":"Vector Editing","title":"Disconnect a Point’s Handle","keys":"⌥Drag"},{"id":"pk-e14926d2c9","section":"Vector Editing","title":"In Vector Edit Mode: use the Bend tool","keys":"Hold ⌘"},{"id":"pk-484340fb88","section":"Vector Editing","title":"In Vector Edit Mode: use the Paint bucket tool","keys":"B"},{"id":"pk-dd1f334cf7","section":"Vector Editing","title":"Delete & Heal Selection (use when deleting points)","keys":"⇧Delete"},{"id":"pk-50c49bd7c8","section":"Vector Editing","title":"Join Selection","keys":"⌘J"},{"id":"pk-4bf6814ceb","section":"Vector Editing","title":"Smooth Join Selection","keys":"⇧⌘J"},{"id":"pk-33c0b164d2","section":"Prototyping","title":"Present Prototype (in new window)","keys":"⌥⌘Return"},{"id":"pk-9c41c68c72","section":"Prototyping","title":"Preview Prototype (in same window)","keys":"⇧Space"},{"id":"pk-4bec102fac","section":"Prototyping","title":"Navigate Frames in Preview or Shared Prototype","keys":"Right or ←"},{"id":"pk-ae8efa2007","section":"Prototyping","title":"Refresh Prototype","keys":"R"},{"id":"pk-e89be060de","section":"Components","title":"Create Component","keys":"⌥⌘K"},{"id":"pk-62f6ae912c","section":"Components","title":"Insert Component Instance","keys":"⇧I"},{"id":"pk-6ae9f55d63","section":"Components","title":"Detach Component Instance","keys":"⌥⌘B"},{"id":"pk-aae43e8e26","section":"Components","title":"Swap Instance","keys":"Hold ⌥ while dragging on a new component"},{"id":"pk-c11fe843bf","section":"Special Copy/Paste","title":"Copy Properties","keys":"⌥⌘C"},{"id":"pk-f3b7238403","section":"Special Copy/Paste","title":"Paste Properties","keys":"⌥⌘V"},{"id":"pk-1dedc273b7","section":"Special Copy/Paste","title":"Copy as PNG","keys":"⇧⌘C"},{"id":"pk-273f4be2e6","section":"Special Copy/Paste","title":"Paste to Replace","keys":"⇧⌘R"},{"id":"pk-1e0e64256a","section":"Special Copy/Paste","title":"Paste Over Selection","keys":"⇧⌘V"},{"id":"pk-44bfc14e79","section":"Measuring Distances Between Elements","title":"Distance to selected layer","keys":"Hold ⌥ & hover over object/group/frame"},{"id":"pk-b6ca4486e8","section":"Measuring Distances Between Elements","title":"Distance to selected layer","keys":"Hold ⌥⌘ & hover over object in group"},{"id":"pk-ff3e44f323","section":"Measuring Distances Between Elements","title":"Distance to selected group","keys":"Hold ⌥⌘ & hover over object in group"},{"id":"pk-12108b8bfa","section":"Miscellaneous","title":"Lighten or Darken a Color","keys":"Select a hex value, then hold ⇧ & hit Up or ↓"},{"id":"pk-7c391274bf","section":"Miscellaneous","title":"Open Actions","keys":"⌘K (in new UI3) or ⌘/"},{"id":"pk-e77ecef6c1","section":"Miscellaneous","title":"Export","keys":"⇧⌘E"},{"id":"pk-3c892ad80e","section":"Miscellaneous","title":"Ignore Smart Guides","keys":"Hold ⌃ while Dragging"},{"id":"pk-23544c577d","section":"Miscellaneous","title":"Find","keys":"⌘F"},{"id":"pk-fee77d0607","section":"Help","title":"Open keyboard shortcuts panel","keys":"⌃⇧?","notes":"Figma's full list lives here"},{"id":"pk-c44d1258cc","section":"Help","title":"Keyboard box selection tool","keys":"⌥Space"},{"id":"pk-483b231d6b","section":"Help","title":"Focus the toolbar","keys":"F6"},{"id":"pk-8adbe4be3d","section":"Zoom","title":"Zoom to 100% (alternate)","keys":"⇧0","notes":"Devlin Peck lists ⇧0; Noble Desktop lists ⌘0. Check in Figma."},{"id":"pk-dc4da9edb6","section":"Layers (Objects), Groups, & Frames","title":"Ungroup (alternate)","keys":"⇧⌘G","notes":"Devlin Peck lists ⇧⌘G; Noble Desktop lists ⌘Delete"},{"id":"pk-34c9b27cb5","section":"Navigation","title":"Drill into selected frame or group","keys":"Return"},{"id":"pk-74c65c7935","section":"Navigation","title":"Zoom at cursor","keys":"⌘-scroll"}]}]</script>
+<input type="file" id="importFile" accept=".json,application/json" hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- constants ---------- */
+const TYPES = {
+  shortcut:{label:"Shortcut", plural:"Shortcuts", glyph:"⌘",  color:"var(--t-shortcut)"},
+  text:    {label:"Text",     plural:"Text",      glyph:"Aa", color:"var(--t-text)"},
+  script:  {label:"Script",   plural:"Scripts",   glyph:"{ }",color:"var(--t-script)"},
+  color:   {label:"Color",    plural:"Colors",    glyph:"●",  color:"var(--t-color)"},
+  image:   {label:"Image",    plural:"Images",    glyph:"▣",  color:"var(--t-image)"},
+  link:    {label:"Link",     plural:"Links",     glyph:"↗",  color:"var(--t-link)"}
+};
+const DEFAULT_CAT = "General";
+const LANGS = ["ExtendScript","JavaScript","AppleScript","GREP","Regex","Python","Bash","CSS","HTML","JSON"];
+const TAURI = !!(window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke);
+const invoke = TAURI ? window.__TAURI__.core.invoke : null;
+const FSA = !TAURI && typeof window.showSaveFilePicker === "function" && typeof window.showOpenFilePicker === "function";
+let appInfo = null;     // desktop app: {library_dir, default_dir, in_icloud, show_tray}
+let loadBlocked = false; // desktop app: library file unreadable, so never overwrite it
+const LS_KEY = "snippet-library-data";
+
+/* ---------- state ---------- */
+let db = {version:1, categories:[DEFAULT_CAT], items:[]};
+const ui = {view:"all", type:null, category:null, tag:null, q:"", sort:"updated", sel:-1};
+let fileHandle = null, fileStatus = "none", fileError = "", lastWrite = 0, dirty = false;
+let visibleOrder = [];
+let persisted = null;      // navigator.storage.persisted() result
+let showAllTags = false;
+
+/* small per-browser settings (backup dates, dismissed tips); never part of the library file */
+const meta = (() => {
+  let m = {};
+  try { m = JSON.parse(localStorage.getItem("snippet-library-meta") || "{}") || {}; } catch {}
+  return {
+    get: k => m[k],
+    set: (k, v) => { m[k] = v; try { localStorage.setItem("snippet-library-meta", JSON.stringify(m)); } catch {} }
+  };
+})();
+if (!meta.get("firstUse")) meta.set("firstUse", Date.now());
+
+let PACKS = [];
+try { PACKS = JSON.parse(document.getElementById("packData").textContent); } catch { PACKS = []; }
+
+const DAY = 864e5;
+function ago(t){
+  if (!t) return "never";
+  const d = Math.floor((Date.now() - t) / DAY);
+  return d <= 0 ? "today" : d === 1 ? "yesterday" : d + " days ago";
+}
+function fileSynced(){ return TAURI ? fileStatus === "connected" : (!!fileHandle && fileStatus === "connected"); }
+async function checkPersisted(){
+  try { if (navigator.storage && navigator.storage.persisted) persisted = await navigator.storage.persisted(); } catch {}
+}
+async function requestPersist(){
+  try {
+    const ok = await navigator.storage.persist();
+    persisted = ok;
+    toast(ok ? "Storage marked permanent. The browser won't clear it to free space." : "Not granted. Keep saving backups.");
+  } catch (e) { toast("Couldn't request it: " + e.message); }
+  meta.set("persistDismissed", true);
+  render();
+}
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
+function normHex(v){
+  let h = String(v || "").trim().replace(/^#/, "");
+  if (/^[0-9a-f]{3}$/i.test(h)) h = h.split("").map(c => c + c).join("");
+  return /^[0-9a-f]{6}$/i.test(h) ? "#" + h.toUpperCase() : "";
+}
+function rgbFromHex(hex){
+  const h = normHex(hex); if (!h) return "";
+  const n = parseInt(h.slice(1), 16);
+  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+function hostOf(u){ try { return new URL(u).host; } catch { return u; } }
+function parseTags(s){
+  const seen = new Set(), out = [];
+  String(s || "").split(",").map(t => t.trim()).filter(Boolean).forEach(t => {
+    const k = t.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push(t); }
+  });
+  return out;
+}
+function tokens(){ return ui.q.toLowerCase().split(/\s+/).filter(Boolean); }
+function hl(text){
+  let out = esc(text);
+  const toks = tokens().map(t => esc(t).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).filter(Boolean);
+  if (!toks.length) return out;
+  const re = new RegExp("(" + toks.join("|") + ")", "gi");
+  // only replace outside of entities
+  return out.split(/(&[a-z#0-9]+;)/i).map(part => part.startsWith("&") && part.endsWith(";") ? part : part.replace(re, "<mark>$1</mark>")).join("");
+}
+
+function normalize(d){
+  const out = {version:1, categories:[], items:[]};
+  if (d && Array.isArray(d.items)) {
+    out.items = d.items.filter(i => i && TYPES[i.type]).map(i => ({
+      id: i.id || uid(), type: i.type, title: i.title || "", content: i.content || "", keys: i.keys || "",
+      app: i.app || "", lang: i.lang || "", hex: i.hex || "", cmyk: i.cmyk || "", spot: i.spot || "",
+      url: i.url || "", image: i.image || "", notes: i.notes || "",
+      category: i.category || DEFAULT_CAT, tags: Array.isArray(i.tags) ? i.tags : parseTags(i.tags),
+      favorite: !!i.favorite, created: i.created || Date.now(), updated: i.updated || i.created || Date.now(),
+      uses: i.uses || 0, lastUsed: i.lastUsed || 0
+    }));
+  }
+  const cats = new Set([DEFAULT_CAT, ...((d && Array.isArray(d.categories)) ? d.categories : [])]);
+  out.items.forEach(i => cats.add(i.category));
+  out.categories = [...cats];
+  return out;
+}
+function displayTitle(it){
+  if (it.title) return it.title;
+  switch (it.type) {
+    case "shortcut": return it.keys + (it.app ? " (" + it.app + ")" : "");
+    case "text": case "script": return (it.content.split("\n").find(l => l.trim()) || "Untitled").trim().slice(0, 60);
+    case "color": return it.spot || it.hex;
+    case "image": return "Image";
+    case "link": return hostOf(it.url);
+  }
+  return "Untitled";
+}
+function previewText(it){
+  switch (it.type) {
+    case "shortcut": return it.app || it.notes || "";
+    case "text": case "script": return it.content.replace(/\s+/g, " ").trim();
+    case "color": return [it.hex, it.cmyk && "CMYK " + it.cmyk].filter(Boolean).join("  ·  ");
+    case "image": return it.notes || "Click to copy image";
+    case "link": return it.url;
+  }
+  return "";
+}
+function primaryValue(it){
+  switch (it.type) {
+    case "shortcut": return it.keys;
+    case "text": case "script": return it.content;
+    case "color": return it.hex;
+    case "link": return it.url;
+  }
+  return "";
+}
+
+/* ---------- storage: IndexedDB mirror + file handle ---------- */
+const idb = (() => {
+  let p;
+  const open = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open("snippet-library", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  }));
+  const run = async (mode, fn) => {
+    const d = await open();
+    return new Promise((res, rej) => {
+      const tx = d.transaction("kv", mode); const st = tx.objectStore("kv");
+      const req = fn(st);
+      tx.oncomplete = () => res(req && req.result);
+      tx.onerror = () => rej(tx.error);
+    });
+  };
+  return {
+    get: k => run("readonly", s => s.get(k)),
+    set: (k, v) => run("readwrite", s => s.put(v, k)),
+    del: k => run("readwrite", s => s.delete(k))
+  };
+})();
+
+let saveTimer = null;
+function persist(){ dirty = true; meta.set("lastChange", Date.now()); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 300); }
+async function flush(){
+  clearTimeout(saveTimer);
+  const json = JSON.stringify(db, null, 1);
+  if (TAURI) {
+    if (loadBlocked) return;
+    try {
+      const m = await invoke("save_library", {json});
+      if (m) lastWrite = m;
+      dirty = false;
+      if (fileStatus !== "connected") setStatus("connected");
+    } catch (e) { setStatus("error", String(e)); }
+    return;
+  }
+  try { await idb.set("data", json); }
+  catch { try { localStorage.setItem(LS_KEY, json); } catch {} }
+  if (fileHandle && fileStatus === "connected") {
+    try {
+      const w = await fileHandle.createWritable();
+      await w.write(json); await w.close();
+      const f = await fileHandle.getFile(); lastWrite = f.lastModified;
+      dirty = false; setStatus("connected");
+    } catch (e) { setStatus("error", e.message); }
+  } else dirty = false;
+}
+async function readFileData(handle){
+  const f = await handle.getFile();
+  const text = await f.text();
+  lastWrite = f.lastModified;
+  if (!text.trim()) return null;
+  return normalize(JSON.parse(text));
+}
+function mergeData(a, b){
+  const map = new Map(a.items.map(i => [i.id, i]));
+  b.items.forEach(i => { const ex = map.get(i.id); if (!ex || (i.updated || 0) > (ex.updated || 0)) map.set(i.id, i); });
+  return normalize({categories:[...a.categories, ...b.categories], items:[...map.values()]});
+}
+async function attachHandle(handle, {fresh}){
+  const perm = await handle.requestPermission({mode:"readwrite"});
+  if (perm !== "granted") { toast("Permission was not granted"); return; }
+  let fileData = null;
+  if (!fresh) {
+    try { fileData = await readFileData(handle); }
+    catch (e) { toast("That file isn't a valid library: " + e.message); return; }
+  }
+  if (fileData && db.items.length && fileData.items.length) {
+    const pick = await choose("Combine libraries?",
+      `This page has ${db.items.length} item(s). The file has ${fileData.items.length}.\nMerge keeps everything (newest edit wins). Replace uses only the file.`,
+      [{label:"Cancel", value:null}, {label:"Replace with file", value:"replace"}, {label:"Merge", value:"merge", primary:true}]);
+    if (!pick) return;
+    db = pick === "merge" ? mergeData(db, fileData) : fileData;
+  } else if (fileData) db = fileData;
+  fileHandle = handle;
+  try { await idb.set("handle", handle); } catch {}
+  setStatus("connected");
+  await flush();
+  render();
+  toast("Connected to " + handle.name);
+}
+async function createFile(){
+  try {
+    const h = await showSaveFilePicker({suggestedName:"snippets.json", types:[{description:"Snippet library", accept:{"application/json":[".json"]}}]});
+    await attachHandle(h, {fresh:true});
+  } catch (e) { if (e.name !== "AbortError") toast(e.message); }
+}
+async function openFile(){
+  try {
+    const [h] = await showOpenFilePicker({types:[{description:"Snippet library", accept:{"application/json":[".json"]}}]});
+    await attachHandle(h, {fresh:false});
+  } catch (e) { if (e.name !== "AbortError") toast(e.message); }
+}
+async function reconnect(){
+  if (TAURI) {
+    await tauriLoad();
+    if (!loadBlocked && dirty) await flush();
+    render(); return;
+  }
+  if (!fileHandle) return;
+  try {
+    const perm = await fileHandle.requestPermission({mode:"readwrite"});
+    if (perm !== "granted") { toast("Permission was not granted"); return; }
+    const data = await readFileData(fileHandle);
+    if (data) db = data;
+    setStatus("connected");
+    if (!data) await flush(); else { try { await idb.set("data", JSON.stringify(db)); } catch {} }
+    render(); toast("Reconnected to " + fileHandle.name);
+  } catch (e) { setStatus("error", e.message); }
+}
+async function disconnect(){
+  await flush();
+  fileHandle = null; try { await idb.del("handle"); } catch {}
+  setStatus("none"); toast("Disconnected. Data stays in this browser.");
+}
+async function checkExternalChange(){
+  if (TAURI) {
+    if (dirty || fileStatus !== "connected") return;
+    try {
+      const m = await invoke("library_mtime");
+      if (m && m > lastWrite + 500) {
+        const info = await invoke("load_library");
+        if (info.data && info.data.trim()) {
+          db = normalize(JSON.parse(info.data)); lastWrite = info.mtime || m;
+          render(); toast("Updated from " + (appInfo && appInfo.in_icloud ? "iCloud" : "the library file"));
+        }
+      }
+    } catch {}
+    return;
+  }
+  if (!fileHandle || fileStatus !== "connected" || dirty) return;
+  try {
+    const f = await fileHandle.getFile();
+    if (f.lastModified > lastWrite + 500) {
+      const data = await readFileData(fileHandle);
+      if (data) { db = data; try { await idb.set("data", JSON.stringify(db)); } catch {} render(); toast("Updated from " + fileHandle.name); }
+    }
+  } catch (e) { setStatus("error", e.message); }
+}
+
+async function exportJSON(){
+  if (TAURI) {
+    try {
+      const ok = await invoke("export_backup", {json: JSON.stringify(db, null, 1), name: "snippets-backup-" + new Date().toISOString().slice(0, 10) + ".json"});
+      if (ok) { meta.set("lastBackup", Date.now()); toast("Backup saved"); render(); }
+    } catch (e) { toast("Couldn't save backup: " + e); }
+    return;
+  }
+  const blob = new Blob([JSON.stringify(db, null, 1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "snippets-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  meta.set("lastBackup", Date.now()); meta.set("backupSnooze", 0);
+  toast("Backup saved to your downloads folder");
+  render();
+}
+async function importJSON(file){ return importText(await file.text()); }
+async function importFromApp(){
+  try { const t = await invoke("import_backup"); if (t) await importText(t); }
+  catch (e) { toast("Couldn't load that file: " + e); }
+}
+function importPicker(){ TAURI ? importFromApp() : $("#importFile").click(); }
+async function importText(text){
+  let data;
+  try { data = normalize(JSON.parse(text)); }
+  catch (e) { toast("Couldn't read that file: " + e.message); return; }
+  if (!data.items.length) { toast("No items found in that file"); return; }
+  let pick = "replace";
+  if (db.items.length) {
+    pick = await choose("Import library", `Import ${data.items.length} item(s).\nMerge keeps your current items too. Replace removes them.`,
+      [{label:"Cancel", value:null}, {label:"Replace", value:"replace", danger:true}, {label:"Merge", value:"merge", primary:true}]);
+    if (!pick) return;
+  }
+  db = pick === "merge" ? mergeData(db, data) : data;
+  if (TAURI && loadBlocked) { loadBlocked = false; fileStatus = "connected"; fileError = ""; }
+  persist(); render(); toast(`Imported ${data.items.length} item(s)`);
+}
+
+/* ---------- status + menu ---------- */
+function setStatus(s, err){
+  const changed = s !== fileStatus || (err || "") !== fileError;
+  fileStatus = s; fileError = err || "";
+  renderStatus();
+  if (changed) renderMain(); // banner lives in main
+}
+function shortPath(p){
+  return String(p || "").replace(/^\/Users\/[^/]+\/Library\/Mobile Documents\/com~apple~CloudDocs/, "iCloud Drive").replace(/^\/Users\/[^/]+/, "~");
+}
+function renderStatus(){
+  const el = $("#status");
+  if (TAURI) {
+    if (fileStatus === "error") {
+      el.innerHTML = `<button class="status error" id="reconBtn" title="${esc(fileError)}"><span class="dot"></span>Not saving. Retry</button>`;
+      $("#reconBtn").onclick = reconnect;
+    } else {
+      el.innerHTML = `<button class="status connected" id="connBtn" title="${esc(appInfo ? appInfo.library_dir : "")}"><span class="dot"></span>${appInfo && appInfo.in_icloud ? "iCloud" : "Saved"} · snippets.json</button>`;
+      $("#connBtn").onclick = () => openMenu();
+    }
+    return;
+  }
+  if (fileStatus === "connected") {
+    el.innerHTML = `<span class="status connected" title="Saving automatically to ${esc(fileHandle.name)}"><span class="dot"></span>${esc(fileHandle.name)}</span>`;
+  } else if (fileStatus === "reconnect") {
+    el.innerHTML = `<button class="status reconnect" id="reconBtn" title="The browser needs your OK again after a restart"><span class="dot"></span>Reconnect ${esc(fileHandle.name)}</button>`;
+    $("#reconBtn").onclick = reconnect;
+  } else if (fileStatus === "error") {
+    el.innerHTML = `<button class="status error" id="reconBtn" title="${esc(fileError)}"><span class="dot"></span>Sync error. Retry</button>`;
+    $("#reconBtn").onclick = reconnect;
+  } else if (FSA) {
+    el.innerHTML = `<button class="status" id="connBtn" title="Save to a JSON file in iCloud Drive or Dropbox"><span class="dot"></span>Not synced. Connect file</button>`;
+    $("#connBtn").onclick = () => openMenu(true);
+  } else {
+    const lb = meta.get("lastBackup");
+    el.innerHTML = `<button class="status${persisted ? " connected" : ""}" id="connBtn" title="Saved in this browser${persisted ? " (permanent storage)" : ""}. Last backup: ${ago(lb)}."><span class="dot"></span>Saved in browser · backup ${ago(lb)}</button>`;
+    $("#connBtn").onclick = () => openMenu();
+  }
+}
+
+function openMenu(){
+  const m = $("#menu");
+  const parts = [];
+  if (TAURI) {
+    const a = appInfo || {};
+    parts.push(`<div class="note">Library folder:<br><b>${esc(shortPath(a.library_dir))}</b>${a.in_icloud ? "" : "<br>Not in iCloud Drive, so it won't sync."}</div>`);
+    parts.push(`<button data-act="reveal">Show in Finder</button>`);
+    parts.push(`<button data-act="changedir">Change library folder…</button>`);
+    parts.push(`<button data-act="backups">Open daily backups</button>`);
+    parts.push(`<button data-act="tray">${a.show_tray ? "✓ " : "&nbsp;&nbsp;&nbsp;"}Show menu bar icon</button>`);
+    parts.push("<hr>");
+  } else if (FSA) {
+    if (fileHandle) {
+      parts.push(`<div class="note">Syncing to <b>${esc(fileHandle.name)}</b></div>`);
+      parts.push(`<button data-act="open">Switch to another file…</button>`);
+      parts.push(`<button data-act="disconnect">Disconnect file</button>`);
+    } else {
+      parts.push(`<button data-act="create">Create new library file…</button>`);
+      parts.push(`<button data-act="open">Open existing library file…</button>`);
+      parts.push(`<div class="note">Save it inside iCloud Drive or Dropbox to sync it.</div>`);
+    }
+    parts.push("<hr>");
+  } else {
+    parts.push(`<div class="note">Your library is saved inside this browser. Last backup: <b>${ago(meta.get("lastBackup"))}</b>.</div>`);
+    if (navigator.storage && navigator.storage.persist && !persisted) parts.push(`<button data-act="persist">Keep browser data permanently…</button>`);
+    parts.push(`<div class="note">Backups go to your Firefox download folder. Change it in Firefox Settings, Downloads, “Save files to” (an iCloud Drive folder works).</div><hr>`);
+  }
+  parts.push(`<button data-act="export">${FSA || TAURI ? "Export backup (.json)…" : "Save backup file (.json)"}</button>`);
+  parts.push(`<button data-act="import">${FSA || TAURI ? "Import from .json…" : "Load from backup file…"}</button>`);
+  parts.push("<hr>");
+  parts.push(`<button data-act="packs">Add shortcut packs…</button>`);
+  parts.push(`<button data-act="newcat">New category…</button>`);
+  if (!db.items.length) parts.push(`<button data-act="samples">Add sample items</button>`);
+  m.innerHTML = parts.join("");
+  m.hidden = false;
+}
+function closeMenu(){ $("#menu").hidden = true; }
+$("#menuBtn").addEventListener("click", e => { e.stopPropagation(); $("#menu").hidden ? openMenu() : closeMenu(); });
+$("#menu").addEventListener("click", async e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  e.stopPropagation(); closeMenu();
+  const act = b.dataset.act;
+  if (act === "create") createFile();
+  else if (act === "open") openFile();
+  else if (act === "disconnect") disconnect();
+  else if (act === "export") exportJSON();
+  else if (act === "import") importPicker();
+  else if (act === "reveal") invoke("reveal_library").catch(e => toast(String(e)));
+  else if (act === "backups") invoke("open_backups").catch(e => toast(String(e)));
+  else if (act === "changedir") changeFolder();
+  else if (act === "tray") toggleTray();
+  else if (act === "newcat") newCategory();
+  else if (act === "samples") addSamples();
+  else if (act === "packs") openPacks();
+  else if (act === "persist") requestPersist();
+});
+document.addEventListener("click", e => { if (!e.target.closest(".menu-wrap") && !e.target.closest("#connBtn")) closeMenu(); });
+$("#importFile").addEventListener("change", e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ""; });
+
+/* ---------- choose / prompt dialog ---------- */
+function choose(title, message, buttons, withInput){
+  return new Promise(resolve => {
+    const d = $("#choice");
+    d.querySelector("h2").textContent = title;
+    d.querySelector("p").textContent = message;
+    const inp = d.querySelector(".choice-input");
+    inp.hidden = !withInput; inp.value = withInput ? (withInput.value || "") : "";
+    const bar = d.querySelector(".btns"); bar.innerHTML = "";
+    let done = false;
+    const finish = v => { if (done) return; done = true; resolve(v); };
+    buttons.forEach(b => {
+      const el = document.createElement("button");
+      el.type = "button"; el.textContent = b.label;
+      el.className = "btn" + (b.primary ? " primary" : "") + (b.danger ? " danger" : "");
+      el.onclick = () => { const v = withInput && b.value ? inp.value.trim() : b.value; d.close(); finish(v); };
+      bar.append(el);
+    });
+    inp.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); bar.lastChild.click(); } };
+    d.onclose = () => finish(null);
+    d.showModal();
+    if (withInput) { inp.focus(); inp.select(); } else bar.lastChild.focus();
+  });
+}
+async function newCategory(){
+  const name = await choose("New category", "", [{label:"Cancel", value:null}, {label:"Create", value:true, primary:true}], {value:""});
+  if (!name) return null;
+  if (!db.categories.some(c => c.toLowerCase() === name.toLowerCase())) { db.categories.push(name); persist(); render(); }
+  return db.categories.find(c => c.toLowerCase() === name.toLowerCase());
+}
+async function categoryMenu(cat){
+  if (cat === DEFAULT_CAT) { toast(`"${DEFAULT_CAT}" can't be renamed or deleted`); return; }
+  const n = db.items.filter(i => i.category === cat).length;
+  const act = await choose(cat, `${n} item(s) in this category.`, [{label:"Cancel", value:null}, {label:"Delete", value:"delete", danger:true}, {label:"Rename", value:"rename", primary:true}]);
+  if (act === "rename") {
+    const name = await choose("Rename category", "", [{label:"Cancel", value:null}, {label:"Rename", value:true, primary:true}], {value:cat});
+    if (!name || name === cat) return;
+    const existing = db.categories.find(c => c.toLowerCase() === name.toLowerCase() && c !== cat);
+    db.items.forEach(i => { if (i.category === cat) i.category = existing || name; });
+    db.categories = db.categories.filter(c => c !== cat);
+    if (!existing) db.categories.push(name);
+    if (ui.category === cat) ui.category = existing || name;
+    persist(); render();
+  } else if (act === "delete") {
+    const ok = await choose("Delete category?", `${n} item(s) will move to "${DEFAULT_CAT}". No items are deleted.`, [{label:"Cancel", value:null}, {label:"Delete category", value:true, danger:true}]);
+    if (!ok) return;
+    db.items.forEach(i => { if (i.category === cat) i.category = DEFAULT_CAT; });
+    db.categories = db.categories.filter(c => c !== cat);
+    if (ui.category === cat) ui.category = null;
+    persist(); render();
+  }
+}
+
+/* ---------- filtering ---------- */
+function filtered(){
+  const toks = tokens();
+  let list = db.items.filter(it => {
+    if (ui.type && it.type !== ui.type) return false;
+    if (ui.category && it.category !== ui.category) return false;
+    if (ui.tag && !it.tags.some(t => t.toLowerCase() === ui.tag.toLowerCase())) return false;
+    if (!toks.length) return true;
+    const hay = [displayTitle(it), it.title, it.content, it.keys, it.app, it.lang, it.hex, rgbFromHex(it.hex), it.cmyk, it.spot, it.url, it.notes, it.category, it.tags.join(" "), TYPES[it.type].label].join(" ").toLowerCase();
+    return toks.every(t => hay.includes(t));
+  });
+  const s = ui.sort;
+  list.sort((a, b) => s === "name" ? displayTitle(a).localeCompare(displayTitle(b), undefined, {sensitivity:"base"})
+    : s === "used" ? (b.uses - a.uses) || (b.lastUsed - a.lastUsed)
+    : (b.updated - a.updated));
+  return list;
+}
+
+/* ---------- rendering ---------- */
+function render(){ renderSide(); renderMain(); renderStatus(); }
+
+function renderSide(){
+  const c = (fn) => db.items.filter(fn).length;
+  const typeRows = Object.entries(TYPES).map(([k, t]) => {
+    const n = c(i => i.type === k);
+    return `<button class="nav-item${ui.type === k ? " active" : ""}" data-type="${k}"><span class="tdot" style="background:${t.color}"></span>${t.plural}<span class="count">${n}</span></button>`;
+  }).join("");
+  const cats = [...db.categories].sort((a, b) => a === DEFAULT_CAT ? -1 : b === DEFAULT_CAT ? 1 : a.localeCompare(b));
+  const catRows = cats.map(cat => `<button class="nav-item${ui.category === cat ? " active" : ""}" data-cat="${esc(cat)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(cat)}</span><span class="count">${c(i => i.category === cat)}</span>${cat === DEFAULT_CAT ? "" : `<span class="more" data-catmenu="${esc(cat)}" title="Rename or delete">⋯</span>`}</button>`).join("");
+  // tags are scoped to the selected category/type, so picking "Photoshop" shows only Photoshop's sections
+  const tagCounts = new Map();
+  db.items.filter(i => (!ui.category || i.category === ui.category) && (!ui.type || i.type === ui.type))
+    .forEach(i => i.tags.forEach(t => { const k = t.toLowerCase(); const e = tagCounts.get(k) || {name:t, n:0}; e.n++; tagCounts.set(k, e); }));
+  let tagList = [...tagCounts.values()].sort((a, b) => a.name.localeCompare(b.name));
+  if (ui.tag && !tagCounts.has(ui.tag.toLowerCase())) tagList.unshift({name: ui.tag, n: 0});
+  const LIMIT = 12, hidden = Math.max(0, tagList.length - LIMIT);
+  if (!showAllTags && hidden) {
+    const active = ui.tag ? tagList.filter(t => t.name.toLowerCase() === ui.tag.toLowerCase()) : [];
+    tagList = [...new Set([...active, ...tagList.slice(0, LIMIT)])];
+  }
+  const tagRows = tagList.map(t =>
+    `<button class="nav-item${ui.tag && ui.tag.toLowerCase() === t.name.toLowerCase() ? " active" : ""}" data-tag="${esc(t.name)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">#${esc(t.name)}</span><span class="count">${t.n}</span></button>`).join("")
+    + (hidden ? `<button class="tag-toggle" data-tagtoggle>${showAllTags ? "Show fewer" : `Show all ${hidden + LIMIT}`}</button>` : "");
+  $("#side").innerHTML = `
+    <div class="nav-group">
+      <button class="nav-item${ui.view === "all" && !anyFilter() ? " active" : ""}" data-view="all">All items<span class="count">${db.items.length}</span></button>
+      <button class="nav-item${ui.view === "favorites" ? " active" : ""}" data-view="favorites">★ Favorites<span class="count">${c(i => i.favorite)}</span></button>
+    </div>
+    <div class="nav-group"><div class="nav-title">Types</div>${typeRows}</div>
+    <div class="nav-group"><div class="nav-title">Categories <button data-newcat title="New category">+</button></div>${catRows}</div>
+    ${tagRows ? `<div class="nav-group"><div class="nav-title">Tags${ui.category ? ` in ${esc(ui.category)}` : ""}</div>${tagRows}</div>` : ""}`;
+}
+function anyFilter(){ return !!(ui.type || ui.category || ui.tag); }
+
+$("#side").addEventListener("click", e => {
+  const more = e.target.closest("[data-catmenu]");
+  if (more) { e.stopPropagation(); categoryMenu(more.dataset.catmenu); return; }
+  if (e.target.closest("[data-newcat]")) { newCategory(); return; }
+  if (e.target.closest("[data-tagtoggle]")) { showAllTags = !showAllTags; renderSide(); return; }
+  const b = e.target.closest(".nav-item"); if (!b) return;
+  if (b.dataset.view) {
+    ui.view = b.dataset.view;
+    if (b.dataset.view === "all") { ui.type = ui.category = ui.tag = null; }
+  }
+  if (b.dataset.type) ui.type = ui.type === b.dataset.type ? null : b.dataset.type;
+  if (b.dataset.cat) ui.category = ui.category === b.dataset.cat ? null : b.dataset.cat;
+  if (b.dataset.tag) ui.tag = ui.tag && ui.tag.toLowerCase() === b.dataset.tag.toLowerCase() ? null : b.dataset.tag;
+  ui.sel = -1; render();
+});
+
+function iconHTML(it, cls){
+  if (it.type === "color") return `<div class="${cls}" style="background:${esc(normHex(it.hex) || "#888")};border-color:var(--border)"></div>`;
+  if (it.type === "image" && it.image) return `<div class="${cls}" style="background-image:url('${it.image}');border-color:var(--border)"></div>`;
+  return `<div class="${cls}" style="background:${TYPES[it.type].color}">${TYPES[it.type].glyph}</div>`;
+}
+function keysHTML(k){ return k ? `<kbd>${esc(k)}</kbd>` : ""; }
+const STAR = on => `<svg width="15" height="15" viewBox="0 0 24 24" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>`;
+const PEN = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>`;
+const TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>`;
+
+function tileHTML(it, idx){
+  let body = "";
+  if (it.type === "color") body = `<div class="swatch" style="background:${esc(normHex(it.hex) || "#888")}"></div><div class="t-sub mono">${hl(it.hex)}${it.cmyk ? "  ·  " + hl(it.cmyk) : ""}</div>`;
+  else if (it.type === "image") body = it.image ? `<div class="thumb" style="background-image:url('${it.image}')"></div>` : "";
+  else if (it.type === "shortcut") body = `<div class="t-sub">${keysHTML(it.keys)}${it.app ? " " + hl(it.app) : ""}</div>`;
+  else body = `<div class="t-sub${it.type === "script" ? " mono" : ""}">${hl(previewText(it).slice(0, 160))}</div>`;
+  return `<button class="tile${ui.sel === idx ? " sel" : ""}" data-idx="${idx}" data-id="${it.id}" title="Click to copy">
+    <div class="t-actions"><span class="icon-btn" data-edit="${it.id}" title="Edit (E)">${PEN}</span><span class="icon-btn on" data-fav="${it.id}" title="Remove from favorites (F)">${STAR(true)}</span></div>
+    <div class="t-type"><span class="tdot" style="background:${TYPES[it.type].color}"></span>${TYPES[it.type].label}</div>
+    <div class="t-title">${hl(displayTitle(it))}</div>
+    ${body}
+  </button>`;
+}
+function rowHTML(it, idx){
+  const prevCls = it.type === "script" || it.type === "color" ? " mono" : "";
+  let prev = it.type === "shortcut" ? `${keysHTML(it.keys)} ${it.app && it.app !== it.category ? hl(it.app) : ""}${it.notes ? ` <span style="opacity:.8">${hl(it.notes)}</span>` : ""}` : hl(previewText(it).slice(0, 220));
+  const chips = [];
+  if (it.type === "color") {
+    chips.push(`<button class="btn small" data-copyv="${it.id}" data-v="hex">HEX</button>`);
+    chips.push(`<button class="btn small" data-copyv="${it.id}" data-v="rgb">RGB</button>`);
+    if (it.cmyk) chips.push(`<button class="btn small" data-copyv="${it.id}" data-v="cmyk">CMYK</button>`);
+    if (it.spot) chips.push(`<button class="btn small" data-copyv="${it.id}" data-v="spot">Spot</button>`);
+  }
+  if (it.type === "link") chips.push(`<button class="btn small" data-openurl="${it.id}">Open</button>`);
+  const meta = [`<span>${esc(it.category)}</span>`, it.type === "script" && it.lang ? `<span>${esc(it.lang)}</span>` : "", ...it.tags.map(t => `<span class="tag">#${hl(t)}</span>`)].filter(Boolean).join("");
+  return `<div class="row${ui.sel === idx ? " sel" : ""}" data-idx="${idx}" data-id="${it.id}" title="Click to copy">
+    ${iconHTML(it, "ico")}
+    <div class="main">
+      <div class="r-title">${hl(displayTitle(it))}</div>
+      <div class="r-prev${prevCls}">${prev}</div>
+      <div class="r-meta">${meta}</div>
+    </div>
+    <div class="r-actions">
+      ${chips.join("")}
+      <button class="icon-btn${it.favorite ? " on" : " hov"}" data-fav="${it.id}" title="${it.favorite ? "Remove from favorites" : "Add to favorites"} (F)">${STAR(it.favorite)}</button>
+      <button class="icon-btn hov" data-edit="${it.id}" title="Edit (E)">${PEN}</button>
+      <button class="icon-btn hov" data-del="${it.id}" title="Delete">${TRASH}</button>
+    </div>
+  </div>`;
+}
+
+function renderMain(){
+  const main = $("#main");
+  const list = filtered();
+  const favs = list.filter(i => i.favorite);
+  const rest = ui.view === "favorites" ? [] : list.filter(i => !i.favorite);
+  visibleOrder = [...favs, ...rest];
+  if (ui.sel >= visibleOrder.length) ui.sel = visibleOrder.length - 1;
+
+  let html = "";
+  if (fileStatus === "reconnect" && fileHandle) {
+    html += `<div class="banner"><span>Your library file <b>${esc(fileHandle.name)}</b> needs one click to reconnect after a browser restart. Until then, changes save to this browser only.</span><span class="spacer"></span><button class="btn primary" data-reconnect>Reconnect</button></div>`;
+  } else if (fileStatus === "error") {
+    html += `<div class="banner"><span>${TAURI ? "" : "Couldn't save to the library file: "}${esc(fileError)}</span><span class="spacer"></span><button class="btn" data-reconnect>Retry</button></div>`;
+  }
+  if (!TAURI && !fileSynced() && db.items.length) {
+    const now = Date.now(), lb = meta.get("lastBackup"), lc = meta.get("lastChange") || 0, snooze = meta.get("backupSnooze") || 0;
+    const due = lc > (lb || 0) && now > snooze && (lb ? now - lb > 7 * DAY : now - meta.get("firstUse") > DAY);
+    if (persisted === false && !meta.get("persistDismissed") && navigator.storage && navigator.storage.persist) {
+      html += `<div class="banner info"><span>Your library lives in this browser. Ask the browser to keep it permanently so it's never cleared to free up disk space.</span><span class="spacer"></span><button class="btn" data-notnow="persist">Not now</button><button class="btn primary" data-persist>Keep permanently</button></div>`;
+    } else if (due) {
+      html += `<div class="banner"><span>Last backup: <b>${ago(lb)}</b>. You've made changes since then.</span><span class="spacer"></span><button class="btn" data-notnow="backup">Remind me later</button><button class="btn primary" data-backup>Save backup</button></div>`;
+    }
+  }
+
+  const chips = [];
+  if (ui.type) chips.push(`<button class="chip" data-clear="type">${TYPES[ui.type].plural} <span>✕</span></button>`);
+  if (ui.category) chips.push(`<button class="chip" data-clear="category">${esc(ui.category)} <span>✕</span></button>`);
+  if (ui.tag) chips.push(`<button class="chip" data-clear="tag">#${esc(ui.tag)} <span>✕</span></button>`);
+  if (chips.length) html += `<div class="chips">${chips.join("")}</div>`;
+
+  if (!db.items.length) {
+    html += `<div class="empty"><h3>Your library is empty</h3>
+      <div>Quick ways to add things:</div>
+      <ul>
+        <li>Press <kbd>N</kbd> or click <b>+ New</b></li>
+        <li>Press <kbd>⌘V</kbd> anywhere on the page to save whatever is on your clipboard (text or image)</li>
+        <li>Drop an image file onto the page</li>
+      </ul>
+      <div><button class="btn primary" data-act2="packs">Add shortcut packs</button> ${FSA ? `<button class="btn" data-act2="create">Create a synced library file</button> ` : `<button class="btn" data-act2="import">Load from backup file</button> `}<button class="btn" data-act2="samples">Add sample items</button></div>
+    </div>`;
+    main.innerHTML = html; return;
+  }
+
+  let idx = 0;
+  if (favs.length) {
+    html += `<div class="section-head"><h2>Favorites</h2><span class="spacer"></span>${ui.view === "favorites" ? sortSelect() : ""}</div>`;
+    html += `<div class="fav-grid">${favs.map(it => tileHTML(it, idx++)).join("")}</div>`;
+  }
+  if (ui.view !== "favorites") {
+    html += `<div class="section-head"><h2>${favs.length ? "Everything else" : "All items"}</h2><span class="spacer"></span>${sortSelect()}</div>`;
+    if (rest.length) html += `<div class="list">${rest.map(it => rowHTML(it, idx++)).join("")}</div>`;
+    else html += `<div class="empty">${favs.length ? "No other matches." : `No matches${ui.q ? ` for “${esc(ui.q)}”` : ""}.`}</div>`;
+  } else if (!favs.length) {
+    html += `<div class="empty">No favorites${ui.q || anyFilter() ? " match" : " yet. Click the star on any item"}.</div>`;
+  }
+  html += `<div class="keys-help"><span><kbd>⌘F</kbd> search</span><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↩</kbd> copy</span><span><kbd>N</kbd> new</span><span><kbd>E</kbd> edit</span><span><kbd>F</kbd> favorite</span><span><kbd>⌘V</kbd> save clipboard</span><span><kbd>esc</kbd> clear</span></div>`;
+  main.innerHTML = html;
+}
+function sortSelect(){
+  return `<select id="sortSel" aria-label="Sort">
+    <option value="updated"${ui.sort === "updated" ? " selected" : ""}>Recently edited</option>
+    <option value="used"${ui.sort === "used" ? " selected" : ""}>Most copied</option>
+    <option value="name"${ui.sort === "name" ? " selected" : ""}>Name</option></select>`;
+}
+
+$("#main").addEventListener("change", e => { if (e.target.id === "sortSel") { ui.sort = e.target.value; ui.sel = -1; renderMain(); } });
+$("#main").addEventListener("click", e => {
+  const t = e.target;
+  const find = id => db.items.find(i => i.id === id);
+  let b;
+  if ((b = t.closest("[data-reconnect]"))) return reconnect();
+  if ((b = t.closest("[data-act2]"))) {
+    const a = b.dataset.act2;
+    return a === "create" ? createFile() : a === "packs" ? openPacks() : a === "import" ? importPicker() : addSamples();
+  }
+  if ((b = t.closest("[data-persist]"))) return requestPersist();
+  if ((b = t.closest("[data-backup]"))) return exportJSON();
+  if ((b = t.closest("[data-notnow]"))) {
+    if (b.dataset.notnow === "persist") meta.set("persistDismissed", true);
+    else meta.set("backupSnooze", Date.now() + 3 * DAY);
+    return renderMain();
+  }
+  if ((b = t.closest("[data-clear]"))) { ui[b.dataset.clear] = null; ui.sel = -1; return render(); }
+  if ((b = t.closest("[data-fav]"))) { e.stopPropagation(); return toggleFav(find(b.dataset.fav)); }
+  if ((b = t.closest("[data-edit]"))) { e.stopPropagation(); return openEditor(find(b.dataset.edit)); }
+  if ((b = t.closest("[data-del]"))) { e.stopPropagation(); return deleteItem(find(b.dataset.del)); }
+  if ((b = t.closest("[data-openurl]"))) { e.stopPropagation(); const it = find(b.dataset.openurl); return TAURI ? invoke("open_url", {url: it.url}).catch(err => toast(String(err))) : window.open(it.url, "_blank", "noopener"); }
+  if ((b = t.closest("[data-copyv]"))) {
+    e.stopPropagation(); const it = find(b.dataset.copyv); const v = b.dataset.v;
+    const val = v === "rgb" ? rgbFromHex(it.hex) : v === "cmyk" ? it.cmyk : v === "spot" ? it.spot : it.hex;
+    return copyItem(it, val, v.toUpperCase());
+  }
+  if ((b = t.closest("[data-idx]"))) {
+    ui.sel = +b.dataset.idx;
+    copyItem(find(b.dataset.id));
+    markSel();
+  }
+});
+
+function markSel(scroll){
+  document.querySelectorAll(".tile.sel,.row.sel").forEach(el => el.classList.remove("sel"));
+  const el = document.querySelector(`[data-idx="${ui.sel}"]`);
+  if (el) { el.classList.add("sel"); if (scroll) el.scrollIntoView({block:"nearest"}); }
+}
+
+/* ---------- actions ---------- */
+function toggleFav(it){
+  if (!it) return;
+  it.favorite = !it.favorite; it.updated = Date.now();
+  persist(); render(); toast(it.favorite ? "Added to favorites" : "Removed from favorites");
+}
+async function deleteItem(it){
+  if (!it) return;
+  const ok = await choose("Delete item?", `“${displayTitle(it)}” will be removed.`, [{label:"Cancel", value:null}, {label:"Delete", value:true, danger:true}]);
+  if (!ok) return false;
+  db.items = db.items.filter(i => i !== it);
+  persist(); render(); toast("Deleted");
+  return true;
+}
+async function imageToPngBlob(dataUrl){
+  const img = await loadImage(dataUrl);
+  const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+  c.getContext("2d").drawImage(img, 0, 0);
+  return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error("Couldn't encode image")), "image/png"));
+}
+function loadImage(src){ return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error("Couldn't load image")); i.src = src; }); }
+function fallbackCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.append(ta); ta.select();
+  const ok = document.execCommand("copy"); ta.remove();
+  if (!ok) throw new Error("Clipboard blocked");
+}
+async function copyItem(it, value, label){
+  if (!it) return;
+  try {
+    if (TAURI) {
+      if (it.type === "image" && value === undefined) {
+        const blob = await imageToPngBlob(it.image);
+        const dataUrl = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
+        await invoke("copy_image_png", {data: dataUrl});
+      } else {
+        await invoke("copy_text", {text: value !== undefined ? value : primaryValue(it)});
+      }
+    } else if (it.type === "image" && value === undefined) {
+      if (!navigator.clipboard || !window.ClipboardItem) throw new Error("This browser can't copy images");
+      // pass a promise so Safari keeps the user gesture
+      await navigator.clipboard.write([new ClipboardItem({"image/png": imageToPngBlob(it.image)})]);
+    } else {
+      const text = value !== undefined ? value : primaryValue(it);
+      try { await navigator.clipboard.writeText(text); } catch { fallbackCopy(text); }
+    }
+    it.uses = (it.uses || 0) + 1; it.lastUsed = Date.now();
+    persist();
+    toast(`Copied ${label ? label + " of " : ""}${displayTitle(it)}`);
+  } catch (e) { toast("Copy failed: " + e.message); }
+}
+
+/* ---------- editor ---------- */
+let edId = null, edType = "text", edImage = "", lastType = "text", recording = false;
+const editor = $("#editor");
+$("#typeSeg").innerHTML = Object.entries(TYPES).map(([k, t]) =>
+  `<label><input type="radio" name="etype" value="${k}"><span><span class="tdot" style="background:${t.color}"></span>${t.label}</span></label>`).join("");
+$("#typeSeg").addEventListener("change", e => setType(e.target.value));
+$("#langList").innerHTML = LANGS.map(l => `<option value="${l}">`).join("");
+
+function setType(t){
+  edType = t;
+  document.querySelectorAll(`#typeSeg input`).forEach(i => i.checked = i.value === t);
+  document.querySelectorAll("#editForm [data-types]").forEach(el => el.hidden = !el.dataset.types.split(" ").includes(t));
+  const ta = $("#f_content");
+  ta.classList.toggle("mono", t === "script");
+  $("#contentLabel").textContent = t === "script" ? "Code" : "Text";
+  ta.placeholder = t === "script" ? "Paste your script, GREP pattern, CSS..." : "Boilerplate copy, email snippets, captions...";
+  $("#formErr").textContent = "";
+}
+function fillCategories(sel){
+  const cats = [...db.categories].sort((a, b) => a === DEFAULT_CAT ? -1 : b === DEFAULT_CAT ? 1 : a.localeCompare(b));
+  $("#f_category").innerHTML = cats.map(c => `<option${c === sel ? " selected" : ""}>${esc(c)}</option>`).join("") + `<option value="__new">+ New category…</option>`;
+}
+$("#f_category").addEventListener("change", async e => {
+  if (e.target.value !== "__new") return;
+  const prev = e.target.dataset.prev || DEFAULT_CAT;
+  const name = await newCategory();
+  // newCategory's dialog closes over the editor; editor stays open underneath
+  fillCategories(name || prev);
+});
+$("#f_category").addEventListener("focus", e => { e.target.dataset.prev = e.target.value; });
+
+function setImage(dataUrl){
+  edImage = dataUrl || "";
+  $("#dropInner").innerHTML = edImage ? `<img src="${edImage}" alt=""><div>Drop, paste, or click to replace</div>` : "Drop an image, paste with ⌘V, or click to choose";
+}
+function updateRgb(){
+  const h = normHex($("#f_hex").value);
+  $("#rgbOut").textContent = h ? "RGB " + rgbFromHex(h) : "RGB is calculated from HEX.";
+  if (h) $("#f_hexpick").value = h.toLowerCase();
+}
+$("#f_hex").addEventListener("input", updateRgb);
+$("#f_hexpick").addEventListener("input", e => { $("#f_hex").value = e.target.value.toUpperCase(); updateRgb(); });
+
+function openEditor(item, preset){
+  if (editor.open) return;
+  closeMenu();
+  stopRecording();
+  const base = {type: lastType, title:"", content:"", keys:"", app:"", lang:"", hex:"", cmyk:"", spot:"", url:"", image:"", notes:"",
+    category: ui.category || DEFAULT_CAT, tags: ui.tag ? [ui.tag] : [], favorite: ui.view === "favorites"};
+  if (!item && ui.type) base.type = ui.type;
+  const it = item ? {...item} : {...base, ...(preset || {})};
+  edId = item ? item.id : null;
+  $("#editHeading").textContent = item ? "Edit item" : "New item";
+  $("#delBtn").hidden = !item;
+  $("#f_title").value = it.title;
+  $("#f_keys").value = it.keys;
+  $("#f_app").value = it.app;
+  $("#f_lang").value = it.lang;
+  $("#f_content").value = it.content;
+  $("#f_hex").value = it.hex;
+  $("#f_cmyk").value = it.cmyk;
+  $("#f_spot").value = it.spot;
+  $("#f_url").value = it.url;
+  $("#f_notes").value = it.notes;
+  $("#f_tags").value = it.tags.join(", ");
+  $("#f_fav").checked = it.favorite;
+  const apps = [...new Set(db.items.map(i => i.app).filter(Boolean))].sort();
+  $("#appList").innerHTML = apps.map(a => `<option value="${esc(a)}">`).join("");
+  fillCategories(it.category);
+  setImage(it.image);
+  setType(it.type);
+  updateRgb();
+  editor.showModal();
+  const first = {shortcut:"#f_keys", text:"#f_content", script:"#f_content", color:"#f_hex", image:"#drop", link:"#f_url"}[it.type];
+  setTimeout(() => (item ? $("#f_title") : $(first)).focus(), 0);
+}
+function closeEditor(){ stopRecording(); editor.close(); }
+$("#cancelBtn").addEventListener("click", closeEditor);
+editor.addEventListener("close", stopRecording);
+$("#delBtn").addEventListener("click", async () => {
+  const it = db.items.find(i => i.id === edId);
+  if (await deleteItem(it)) closeEditor();
+});
+$("#editForm").addEventListener("submit", e => { e.preventDefault(); saveEditor(); });
+editor.addEventListener("keydown", e => {
+  if (recording) return;
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); saveEditor(); }
+});
+
+function saveEditor(){
+  const v = id => $("#" + id).value.trim();
+  const t = edType;
+  let url = v("f_url");
+  if (url && !/^[a-z][a-z0-9+.-]*:/i.test(url)) url = "https://" + url;
+  const data = {
+    type: t, title: v("f_title"),
+    keys: t === "shortcut" ? v("f_keys") : "",
+    app: t === "shortcut" ? v("f_app") : "",
+    lang: t === "script" ? v("f_lang") : "",
+    content: (t === "text" || t === "script") ? $("#f_content").value.replace(/\s+$/, "") : "",
+    hex: t === "color" ? normHex(v("f_hex")) : "",
+    cmyk: t === "color" ? v("f_cmyk") : "",
+    spot: t === "color" ? v("f_spot") : "",
+    url: t === "link" ? url : "",
+    image: t === "image" ? edImage : "",
+    notes: v("f_notes"),
+    category: $("#f_category").value === "__new" ? DEFAULT_CAT : $("#f_category").value,
+    tags: parseTags($("#f_tags").value),
+    favorite: $("#f_fav").checked
+  };
+  const err = t === "shortcut" && !data.keys ? "Add the keys for this shortcut."
+    : (t === "text" || t === "script") && !data.content.trim() ? `Add some ${t === "script" ? "code" : "text"}.`
+    : t === "color" && !data.hex ? "Enter a valid HEX value, like #1C1C1B."
+    : t === "image" && !data.image ? "Add an image."
+    : t === "link" && !data.url ? "Add a URL." : "";
+  if (err) { $("#formErr").textContent = err; return; }
+  if (!db.categories.includes(data.category)) db.categories.push(data.category);
+  const now = Date.now();
+  if (edId) {
+    const it = db.items.find(i => i.id === edId);
+    Object.assign(it, data, {updated: now});
+  } else {
+    db.items.push({id: uid(), ...data, created: now, updated: now, uses: 0, lastUsed: 0});
+  }
+  lastType = t;
+  persist(); closeEditor(); render();
+  toast(edId ? "Saved" : "Added " + displayTitle(data));
+}
+
+/* key recording */
+const KEYNAMES = {ArrowUp:"↑",ArrowDown:"↓",ArrowLeft:"←",ArrowRight:"→",Enter:"↩",Backspace:"⌫",Delete:"⌦",Escape:"⎋",Tab:"⇥",Space:"Space",PageUp:"PgUp",PageDown:"PgDn",Home:"Home",End:"End",
+  Minus:"-",Equal:"=",BracketLeft:"[",BracketRight:"]",Backslash:"\\",Semicolon:";",Quote:"'",Comma:",",Period:".",Slash:"/",Backquote:"`"};
+function comboFrom(e){
+  if (["Meta","Control","Alt","Shift","CapsLock","Fn"].includes(e.key)) return null;
+  let k;
+  if (/^Key[A-Z]$/.test(e.code)) k = e.code.slice(3);
+  else if (/^Digit\d$/.test(e.code)) k = e.code.slice(5);
+  else if (/^Numpad/.test(e.code)) k = "Num " + e.code.slice(6);
+  else if (/^F\d{1,2}$/.test(e.code)) k = e.code;
+  else k = KEYNAMES[e.code] || KEYNAMES[e.key] || (e.key.length === 1 ? e.key.toUpperCase() : e.key);
+  const mods = isMac
+    ? (e.ctrlKey ? "⌃" : "") + (e.altKey ? "⌥" : "") + (e.shiftKey ? "⇧" : "") + (e.metaKey ? "⌘" : "")
+    : [e.ctrlKey && "Ctrl", e.altKey && "Alt", e.shiftKey && "Shift", e.metaKey && "Win"].filter(Boolean).map(m => m + "+").join("");
+  return mods + k;
+}
+function onRecordKey(e){
+  e.preventDefault(); e.stopPropagation();
+  const combo = comboFrom(e); if (!combo) return;
+  $("#f_keys").value = combo;
+  stopRecording();
+  $("#f_keys").focus();
+}
+function startRecording(){
+  recording = true;
+  $("#f_keys").classList.add("recording");
+  $("#recBtn").textContent = "Press keys…";
+  window.addEventListener("keydown", onRecordKey, true);
+}
+function stopRecording(){
+  if (!recording) return;
+  recording = false;
+  $("#f_keys").classList.remove("recording");
+  $("#recBtn").textContent = "Record";
+  window.removeEventListener("keydown", onRecordKey, true);
+}
+$("#recBtn").addEventListener("click", () => recording ? stopRecording() : startRecording());
+// The dialog's built-in Esc-to-close fires as a "cancel" event; while recording, keep it open
+editor.addEventListener("cancel", e => { if (recording) { e.preventDefault(); } });
+
+/* image intake */
+async function fileToDataUrl(file){
+  const raw = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(file); });
+  const img = await loadImage(raw);
+  const MAX = 1600;
+  const scale = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+  if (scale === 1 && file.size < 1.5e6) return raw;
+  const c = document.createElement("canvas");
+  c.width = Math.round(img.naturalWidth * scale); c.height = Math.round(img.naturalHeight * scale);
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+  const keepPng = /png|gif|webp|svg/.test(file.type);
+  return keepPng ? c.toDataURL("image/png") : c.toDataURL("image/jpeg", 0.9);
+}
+const drop = $("#drop");
+drop.addEventListener("click", () => $("#imgFile").click());
+drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#imgFile").click(); } });
+$("#imgFile").addEventListener("change", async e => { const f = e.target.files[0]; if (f) setImage(await fileToDataUrl(f)); e.target.value = ""; });
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, () => drop.classList.remove("over")));
+drop.addEventListener("drop", async e => {
+  e.preventDefault(); e.stopPropagation();
+  const f = [...e.dataTransfer.files].find(f => f.type.startsWith("image/"));
+  if (f) setImage(await fileToDataUrl(f));
+});
+
+/* page-level drop: dropping an image anywhere starts a new image item */
+document.addEventListener("dragover", e => { if (!editor.open) e.preventDefault(); });
+document.addEventListener("drop", async e => {
+  if (editor.open) return;
+  e.preventDefault();
+  const f = [...(e.dataTransfer?.files || [])].find(f => f.type.startsWith("image/"));
+  if (!f) return;
+  const img = await fileToDataUrl(f);
+  openEditor(null, {type:"image", image:img, title:f.name.replace(/\.[^.]+$/, "")});
+});
+
+/* paste: in editor image mode, or anywhere on the page to quick-add */
+document.addEventListener("paste", async e => {
+  const cd = e.clipboardData; if (!cd) return;
+  const imgItem = [...cd.items].find(i => i.type.startsWith("image/"));
+  if ($("#packsDlg").open || $("#choice").open) return;
+  if (editor.open) {
+    if (edType === "image" && imgItem) { e.preventDefault(); setImage(await fileToDataUrl(imgItem.getAsFile())); }
+    return;
+  }
+  const a = document.activeElement;
+  if (a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.isContentEditable)) return;
+  e.preventDefault();
+  if (imgItem) { openEditor(null, {type:"image", image: await fileToDataUrl(imgItem.getAsFile())}); return; }
+  const text = cd.getData("text/plain");
+  if (!text) return;
+  const t = text.trim();
+  if (/^https?:\/\/\S+$/i.test(t)) openEditor(null, {type:"link", url:t});
+  else if (normHex(t) && /^#?[0-9a-f]{3}([0-9a-f]{3})?$/i.test(t)) openEditor(null, {type:"color", hex:normHex(t)});
+  else openEditor(null, {type: ui.type === "script" ? "script" : "text", content:text});
+});
+
+/* ---------- search + keyboard ---------- */
+const q = $("#q");
+q.addEventListener("input", () => { ui.q = q.value; ui.sel = q.value ? 0 : -1; renderMain(); markSel(); });
+function moveSel(d){
+  if (!visibleOrder.length) return;
+  ui.sel = ui.sel < 0 ? (d > 0 ? 0 : visibleOrder.length - 1) : Math.max(0, Math.min(visibleOrder.length - 1, ui.sel + d));
+  markSel(true);
+}
+function selItem(){ return visibleOrder[ui.sel]; }
+
+document.addEventListener("keydown", e => {
+  const mod = e.metaKey || e.ctrlKey;
+  if (mod && e.key.toLowerCase() === "f" && !e.shiftKey && !e.altKey) {
+    e.preventDefault();
+    if (editor.open || $("#choice").open || $("#packsDlg").open) return;
+    q.focus(); q.select(); return;
+  }
+  if (editor.open || $("#choice").open || $("#packsDlg").open) return;
+  const a = document.activeElement;
+  const inSearch = a === q;
+  const typing = !inSearch && a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.tagName === "SELECT" || a.isContentEditable);
+  if (typing) return;
+
+  if (e.key === "ArrowDown") { e.preventDefault(); moveSel(1); return; }
+  if (e.key === "ArrowUp") { e.preventDefault(); moveSel(-1); return; }
+  if (e.key === "Enter" && !mod) {
+    const it = selItem() || (inSearch ? visibleOrder[0] : null);
+    if (it) { e.preventDefault(); copyItem(it); }
+    return;
+  }
+  if (e.key === "Escape") {
+    if (!$("#menu").hidden) { closeMenu(); return; }
+    if (q.value) { q.value = ""; ui.q = ""; ui.sel = -1; renderMain(); return; }
+    if (inSearch) { q.blur(); return; }
+    if (anyFilter() || ui.view !== "all") { ui.type = ui.category = ui.tag = null; ui.view = "all"; ui.sel = -1; render(); }
+    return;
+  }
+  if (inSearch || mod || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "n") { e.preventDefault(); openEditor(null); }
+  else if (k === "/") { e.preventDefault(); q.focus(); q.select(); }
+  else if (k === "e" && selItem()) { e.preventDefault(); openEditor(selItem()); }
+  else if (k === "f" && selItem()) { e.preventDefault(); const it = selItem(); toggleFav(it); ui.sel = visibleOrder.indexOf(it); markSel(true); }
+});
+$("#newBtn").addEventListener("click", () => openEditor(null));
+window.addEventListener("focus", checkExternalChange);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkExternalChange(); else if (dirty) flush(); });
+window.addEventListener("beforeunload", () => { if (dirty) flush(); });
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+/* ---------- shortcut packs ---------- */
+function packHave(p){ const ids = new Set(db.items.map(i => i.id)); return p.items.filter(i => ids.has(i.id)).length; }
+function openPacks(){
+  closeMenu();
+  if (!PACKS.length) { toast("No packs found in this file"); return; }
+  const d = $("#packsDlg");
+  d.querySelector(".pack-list").innerHTML = PACKS.map((p, i) => {
+    const have = packHave(p), all = have === p.items.length;
+    return `<label class="pack"><input type="checkbox" value="${i}"${all ? " disabled" : have ? "" : " checked"}>
+      <span class="pack-main"><b>${esc(p.app)}</b> <span class="muted">${p.items.length} shortcuts${have ? ` · ${all ? "all" : have} added` : ""}</span>
+      <span class="pack-src">Source: ${esc(p.source)}</span></span>
+      ${have ? `<button type="button" class="btn small danger" data-rmpack="${i}">Remove</button>` : ""}</label>`;
+  }).join("");
+  d.showModal();
+}
+function addPacks(idxs){
+  const ids = new Set(db.items.map(i => i.id)), now = Date.now(); let n = 0, step = 0;
+  idxs.forEach(ix => {
+    const p = PACKS[ix]; if (!p) return;
+    if (!db.categories.includes(p.app)) db.categories.push(p.app);
+    p.items.forEach(it => {
+      if (ids.has(it.id)) return;
+      // created/updated step down so "Recently edited" keeps the source's order
+      db.items.push({id: it.id, type: "shortcut", title: it.title, content: "", keys: it.keys, app: p.app, lang: "",
+        hex: "", cmyk: "", spot: "", url: "", image: "", notes: it.notes || "", category: p.app, tags: [it.section],
+        favorite: false, created: now - step, updated: now - step, uses: 0, lastUsed: 0});
+      step++;
+      n++;
+    });
+  });
+  persist(); render();
+  toast(n ? `Added ${n} shortcuts` : "Nothing new to add");
+}
+async function removePack(ix){
+  const p = PACKS[ix]; const ids = new Set(p.items.map(i => i.id));
+  const mine = db.items.filter(i => ids.has(i.id));
+  const keep = mine.filter(i => i.favorite || i.updated > i.created + 1000);
+  const ok = await choose(`Remove ${p.app} pack?`,
+    `${mine.length - keep.length} shortcut(s) will be removed.${keep.length ? `\n${keep.length} you favorited or edited will be kept.` : ""}`,
+    [{label:"Cancel", value:null}, {label:"Remove", value:true, danger:true}]);
+  if (!ok) return;
+  const keepIds = new Set(keep.map(i => i.id));
+  db.items = db.items.filter(i => !ids.has(i.id) || keepIds.has(i.id));
+  persist(); render(); toast(`Removed ${mine.length - keep.length} shortcuts`);
+  if ($("#packsDlg").open) { $("#packsDlg").close(); openPacks(); }
+}
+$("#packsCancel").addEventListener("click", () => $("#packsDlg").close());
+$("#packsAdd").addEventListener("click", () => {
+  const idxs = [...document.querySelectorAll("#packsDlg .pack input:checked:not(:disabled)")].map(i => +i.value);
+  $("#packsDlg").close();
+  if (idxs.length) addPacks(idxs);
+});
+$("#packsDlg").addEventListener("click", e => {
+  const b = e.target.closest("[data-rmpack]");
+  if (b) { e.preventDefault(); e.stopPropagation(); removePack(+b.dataset.rmpack); }
+});
+
+/* ---------- samples ---------- */
+function addSamples(){
+  const now = Date.now(); let n = 0;
+  const mk = o => ({id:uid(), title:"", content:"", keys:"", app:"", lang:"", hex:"", cmyk:"", spot:"", url:"", image:"", notes:"", category:DEFAULT_CAT, tags:[], favorite:false, created:now - (n++) * 1000, updated:now - n * 1000, uses:0, lastUsed:0, ...o});
+  ["Illustrator","Photoshop"].forEach(c => { if (!db.categories.includes(c)) db.categories.push(c); });
+  db.items.push(
+    mk({type:"shortcut", title:"Outline stroke", keys:"⌥⌘O", app:"Illustrator", category:"Illustrator", tags:["paths"], notes:"Sample. Set this up in Edit > Keyboard Shortcuts first", favorite:true}),
+    mk({type:"shortcut", title:"Merge visible to new layer", keys:"⌥⇧⌘E", app:"Photoshop", category:"Photoshop", tags:["layers"], favorite:true}),
+    mk({type:"color", title:"Sample brand charcoal", hex:"#1C1C1B", cmyk:"0 0 0 95", tags:["brand"], favorite:true}),
+    mk({type:"text", title:"Proof approval note", content:"Please review the attached proof and reply with approval or any changes by end of day. Once approved, files go to print as shown.", tags:["email","print"]}),
+    mk({type:"script", title:"GREP: double spaces", lang:"GREP", content:" {2,}", notes:"Find two or more spaces in InDesign", tags:["indesign"]}),
+    mk({type:"link", title:"Pantone color finder", url:"https://www.pantone.com/color-finder", tags:["color"]})
+  );
+  persist(); render(); toast("Added 6 sample items. Delete them any time.");
+}
+
+/* ---------- init ---------- */
+async function tauriLoad(){
+  try { appInfo = await invoke("get_settings"); } catch {}
+  try {
+    const info = await invoke("load_library");
+    lastWrite = info.mtime || 0;
+    if (info.data && info.data.trim()) {
+      try { db = normalize(JSON.parse(info.data)); loadBlocked = false; fileStatus = "connected"; fileError = ""; }
+      catch (e) {
+        loadBlocked = true; fileStatus = "error";
+        fileError = "The library file couldn't be read (" + e.message + "). Nothing will be saved until it's fixed or you import a backup. Daily backups are in the Backups folder.";
+      }
+    } else { loadBlocked = false; fileStatus = "connected"; fileError = ""; }
+  } catch (e) { loadBlocked = true; fileStatus = "error"; fileError = String(e); }
+}
+async function changeFolder(){
+  let info;
+  try { info = await invoke("pick_library_dir"); } catch (e) { toast(String(e)); return; }
+  if (!info) return;
+  let mode = "move";
+  if (info.data && info.data.trim()) {
+    let theirs = null;
+    try { theirs = normalize(JSON.parse(info.data)); } catch {}
+    mode = await choose("That folder already has a library",
+      `It has ${theirs ? theirs.items.length : "an unreadable"} item(s). Yours has ${db.items.length}.\nMerge combines both (newest edit wins). Use that library switches to it. Replace overwrites it with yours.`,
+      [{label:"Cancel", value:null}, {label:"Replace with mine", value:"replace", danger:true}, {label:"Use that library", value:"use"}, {label:"Merge", value:"merge", primary:true}]);
+    if (!mode) return;
+    if (!theirs && mode !== "replace") { toast("That library file couldn't be read"); return; }
+    if (mode === "use") db = theirs; else if (mode === "merge") db = mergeData(db, theirs);
+  }
+  try { await invoke("set_library_dir", {dir: info.dir}); } catch (e) { toast(String(e)); return; }
+  try { appInfo = await invoke("get_settings"); } catch {}
+  loadBlocked = false; fileStatus = "connected"; fileError = "";
+  if (mode === "use") lastWrite = info.mtime || 0; else { dirty = true; await flush(); }
+  render(); toast("Library folder changed");
+}
+async function toggleTray(){
+  if (!appInfo) return;
+  const show = !appInfo.show_tray;
+  try { await invoke("set_show_tray", {show}); appInfo.show_tray = show; toast(show ? "Menu bar icon on" : "Menu bar icon off"); }
+  catch (e) { toast("Couldn't change it: " + e); }
+}
+async function init(){
+  if (TAURI) { await tauriLoad(); render(); return; }
+  let json = null;
+  try { json = await idb.get("data"); } catch {}
+  if (!json) { try { json = localStorage.getItem(LS_KEY); } catch {} }
+  if (json) { try { db = normalize(JSON.parse(json)); } catch {} }
+  if (FSA) {
+    try {
+      const h = await idb.get("handle");
+      if (h) {
+        fileHandle = h;
+        const p = await h.queryPermission({mode:"readwrite"});
+        if (p === "granted") {
+          const data = await readFileData(h);
+          if (data) db = data;
+          fileStatus = "connected";
+        } else fileStatus = "reconnect";
+      }
+    } catch (e) { if (fileHandle) { fileStatus = "error"; fileError = e.message; } }
+  }
+  await checkPersisted();
+  render();
+}
+init();
+})();
+</script>
+</body>
+</html>

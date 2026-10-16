@@ -1,0 +1,77 @@
+name: Build macOS app
+
+# Runs on every push to main (updates the "latest" release),
+# on version tags like v1.2.0 (creates a versioned release),
+# and on demand from the Actions tab.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (Apple Silicon + Intel targets)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Cache Rust build
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Tauri CLI
+        run: npm install -g @tauri-apps/cli@^2
+
+      - name: Build universal app (runs on Apple Silicon and Intel Macs)
+        run: tauri build --target universal-apple-darwin --bundles app
+
+      - name: Package .dmg and .zip
+        run: |
+          set -euo pipefail
+          APP_DIR="src-tauri/target/universal-apple-darwin/release/bundle/macos"
+          mkdir -p dist staging
+          cp -R "$APP_DIR/Snippet Library.app" staging/
+          ln -s /Applications staging/Applications
+          hdiutil create -volname "Snippet Library" -srcfolder staging -ov -format UDZO "dist/Snippet-Library.dmg"
+          (cd "$APP_DIR" && ditto -c -k --keepParent "Snippet Library.app" "$GITHUB_WORKSPACE/dist/Snippet-Library.app.zip")
+          ls -la dist
+
+      - name: Keep build files on the run page
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snippet-Library-macOS
+          path: dist/*
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            gh release create "$GITHUB_REF_NAME" dist/* \
+              --title "Snippet Library $GITHUB_REF_NAME" \
+              --notes-file .github/release-notes.md
+          else
+            gh release delete latest --yes --cleanup-tag || true
+            gh release create latest dist/* \
+              --title "Snippet Library (latest build)" \
+              --notes-file .github/release-notes.md \
+              --target "$GITHUB_SHA" --latest
+          fi
